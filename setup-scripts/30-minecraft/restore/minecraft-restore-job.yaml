@@ -34,6 +34,8 @@ spec:
               value: "/restore"
             - name: PGPCB_REMOTE_FOLDER
               value: "/VSERVERBACKUP/minecraft"
+            - name: PGPCB_FILTER_DATE
+              value: ""
             - name: PGPCB_DELETE_LOCAL
               value: "true"
             - name: PGPCB_TEMP_FOLDER
