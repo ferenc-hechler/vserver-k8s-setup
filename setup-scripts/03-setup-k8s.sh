@@ -13,7 +13,7 @@ sudo apt-get install -y apt-transport-https ca-certificates curl
 # Install containerd
 ## config
 curl -fsSLo containerd-config.toml https://gist.githubusercontent.com/oradwell/31ef858de3ca43addef68ff971f459c2/raw/5099df007eb717a11825c3890a0517892fa12dbf/containerd-config.toml
-sudo mkdir /etc/containerd
+sudo mkdir -p /etc/containerd
 sudo mv containerd-config.toml /etc/containerd/config.toml
 
 curl -fsSLo containerd-1.6.14-linux-amd64.tar.gz https://github.com/containerd/containerd/releases/download/v1.6.14/containerd-1.6.14-linux-amd64.tar.gz
@@ -91,7 +91,7 @@ sudo kubeadm init --pod-network-cidr=10.244.0.0/16
 # setup kubectl
 
 mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo cp -if /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 
