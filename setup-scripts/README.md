@@ -7,10 +7,12 @@ these scripts can be used to setup a kubernetes cluster on a fresh ubuntu 22.04 
 after starting with a fresh ubuntu 22.04 image create a user with sudo rights and ssh login.
 Execute as root user:
 
+Important: the script contains my public SSH key to allow login with ssh. You should 
+replace the value in `echo "ssh-ed25519 AAAAC3Nza...` with your public key.
+
 ```
 curl -O https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/main/setup-scripts/01-create-user.sh
-chmod u+x 01-create-user.sh
-./01-create-user.sh <username>
+source 01-create-user.sh ferenc
    <enter hidden password>
 
 # cleanup
@@ -24,6 +26,15 @@ login as newly created user
 ```
 curl https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/main/setup-scripts/02-clone-repo.sh | bash
 ```
+
+# All following steps (except backup & restore) 
+
+The steps can be executed each or all together with the following command:
+
+```
+~/git/vserver-k8s-setup/setup-scripts/xx-run-all-scripts.sh
+```
+
 
 # Step 3 - Setup Kubernetes
 
@@ -75,6 +86,19 @@ https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
 ```
 
 # Step 8 - MinIO
+
+Infos
+
+* Quickstart https://min.io/docs/minio/kubernetes/upstream/
+* Example Deployment https://raw.githubusercontent.com/minio/docs/master/source/extra/examples/minio-dev.yaml
+* usage in velero https://github.com/vmware-tanzu/velero/blob/main/examples/minio/00-minio-deployment.yaml
+
+## Problems in GUI uploading files > 1MB
+
+* https://github.com/minio/minio/issues/8538#issuecomment-586445269
+* https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#custom-max-body-size
+
+
 
 ```
 ~/git/vserver-k8s-setup/setup-scripts/08-minio.sh

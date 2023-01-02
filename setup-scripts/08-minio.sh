@@ -24,6 +24,8 @@ kubectl apply -f 08-minio/minio-api-service.yaml
 kubectl apply -f 08-minio/minio-ingress.yaml
 kubectl apply -f 08-minio/minio-api-ingress.yaml
 
+kubectl apply -f 08-minio/init/create-backup-bucket.yaml
+
 echo
 echo "to get the minio admin password use:" 
 echo "GPW=\$(kubectl get secret -n minio minio-admin-secret -o go-template='{{index .data \"admin-password\" | base64decode}}')" 

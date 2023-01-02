@@ -1,0 +1,36 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: minio
+  name: minio-setup
+  labels:
+    app: minio
+spec:
+  template:
+    metadata:
+      name: minio-setup
+    spec:
+      restartPolicy: Never
+      volumes:
+      - name: config
+        emptyDir: {}
+      containers:
+      - name: mc
+        image: minio/mc:latest
+        imagePullPolicy: IfNotPresent
+        command:
+        - /bin/sh
+        - -c
+        - " mc --config-dir=/config config host add local-minio http://minio-api-service:80 $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD && mc --config-dir=/config mb -p local-minio/backup-bucket"
+        env:
+        - name: MINIO_ROOT_USER
+          value: admin
+        - name: MINIO_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: minio-admin-secret
+              key: admin-password        
+        volumeMounts:
+        - name: config
+          mountPath: "/config"
