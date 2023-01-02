@@ -8,7 +8,7 @@ after starting with a fresh ubuntu 22.04 image create a user with sudo rights an
 Execute as root user:
 
 ```
-curl -O https://raw.githubusercontent.com/ferenc-hechler/vserver-scripts/main/setup-scripts/01-create-user.sh
+curl -O https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/main/setup-scripts/01-create-user.sh
 chmod u+x 01-create-user.sh
 ./01-create-user.sh <username>
    <enter hidden password>
@@ -22,13 +22,13 @@ login as newly created user
 # Step 2 - Clone this Repo
 
 ```
-curl https://raw.githubusercontent.com/ferenc-hechler/vserver-scripts/main/setup-scripts/02-clone-repo.sh | bash
+curl https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/main/setup-scripts/02-clone-repo.sh | bash
 ```
 
 # Step 3 - Setup Kubernetes
 
 ```
-~/git/vserver-scripts/setup-scripts/03-setup-k8s.sh
+~/git/vserver-k8s-setup/setup-scripts/03-setup-k8s.sh
 ```
 
 ## Use kubectl from local PC
@@ -42,13 +42,13 @@ the local filesystem ~/.kube/config
 ## 4-1 install ingress-nginx
 
 ```
-~/git/vserver-scripts/setup-scripts/04-1-ingress-nginx.sh
+~/git/vserver-k8s-setup/setup-scripts/04-1-ingress-nginx.sh
 ```
 
 ## 4-2 forward default ports (sudo inside) 
 
 ```
-~/git/vserver-scripts/setup-scripts/04-2-route-default-ports.sh
+~/git/vserver-k8s-setup/setup-scripts/04-2-route-default-ports.sh
 ```
 
 
@@ -56,7 +56,7 @@ the local filesystem ~/.kube/config
 
 
 ```
-~/git/vserver-scripts/setup-scripts/05-cert-manager.sh
+~/git/vserver-k8s-setup/setup-scripts/05-cert-manager.sh
 ```
 
 
@@ -65,19 +65,19 @@ the local filesystem ~/.kube/config
 https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
 
 ```
-~/git/vserver-scripts/setup-scripts/06-prometheus-grafana.sh
+~/git/vserver-k8s-setup/setup-scripts/06-prometheus-grafana.sh
 ```
 
 # Step 7 - Dashboard
 
 ```
-~/git/vserver-scripts/setup-scripts/07-dashboard.sh
+~/git/vserver-k8s-setup/setup-scripts/07-dashboard.sh
 ```
 
 # Step 8 - MinIO
 
 ```
-~/git/vserver-scripts/setup-scripts/08-minio.sh
+~/git/vserver-k8s-setup/setup-scripts/08-minio.sh
 ```
 
 # Applikationen
@@ -85,43 +85,43 @@ https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
 ## Minecraft
 
 ```
-~/git/vserver-scripts/setup-scripts/30-1-minecraft.sh
+~/git/vserver-k8s-setup/setup-scripts/30-1-minecraft.sh
 ```
 
 ### setup routes from port 61267 to nodeport (uses sudo)  
 
 ```
-~/git/vserver-scripts/setup-scripts/30-2-route-minecraft-port.sh
+~/git/vserver-k8s-setup/setup-scripts/30-2-route-minecraft-port.sh
 ```
 
 ### World-Backup CronJob (needs git-crypt unlock)
   
 ```
-~/git/vserver-scripts/setup-scripts/30-3-minecraft-backup.sh
+~/git/vserver-k8s-setup/setup-scripts/30-3-minecraft-backup.sh
 ```
 
 ### Manual World-Restore Job (needs git-crypt unlock)
   
 ```
-# ~/git/vserver-scripts/setup-scripts/30-4-minecraft-restore.sh
+# ~/git/vserver-k8s-setup/setup-scripts/30-4-minecraft-restore.sh
 ```
 
 ## Nexus
 
 ```
-~/git/vserver-scripts/setup-scripts/40-1-nexus.sh
+~/git/vserver-k8s-setup/setup-scripts/40-1-nexus.sh
 ```
 
 ### Nexus Backup CronJob (needs git-crypt unlock)
   
 ```
-~/git/vserver-scripts/setup-scripts/40-2-nexus-backup.sh
+~/git/vserver-k8s-setup/setup-scripts/40-2-nexus-backup.sh
 ```
 
 ### Manual Nexus-Restore Job (needs git-crypt unlock)
   
 ```
-# ~/git/vserver-scripts/setup-scripts/40-3-nexus-restore.sh
+# ~/git/vserver-k8s-setup/setup-scripts/40-3-nexus-restore.sh
 ```
 
 
