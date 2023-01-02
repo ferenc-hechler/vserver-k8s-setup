@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: init-downloader
+  namespace: minecraft
+spec:
+  selector:
+    matchLabels:
+      app: init-downloader
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: init-downloader
+    spec:
+      containers:
+      - name: init-downloader
+        image: "busybox"
+        command: [ "/bin/sh", "-c", "--" ]
+        args: [ "echo waiting 1 hour;
+        sleep 3600;
+        echo finished" ]
+        volumeMounts:
+        - mountPath: /data
+          name: data          
+        - mountPath: /backup
+          name: backup          
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: mc-forge-1-12-pvc
+      - name: backup
+        persistentVolumeClaim:
+          claimName: backup-pvc
+
+        
+          

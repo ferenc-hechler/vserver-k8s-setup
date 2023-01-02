@@ -1,0 +1,73 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: minecraft-backup-cronjob
+  namespace: minecraft
+  labels:
+    app: minecraft-backup
+spec:
+
+spec:
+  schedule: "15 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: minecraft-backup
+            image: feridock/pgpcloudbackup:0.1
+            command: [ "/bin/sh", "-c", "--" ]
+            args: [ "echo starting minecraft-backup;
+            set -x;
+            date;
+            rm -rf /backup/minecraft-data-*.tgz;
+            date;
+            export TODAY=$(date -I);
+            ls -lah /minecraft-data/mods > /minecraft-data/mod-list.txt;
+            chmod 777 /minecraft-data/mod-list.txt;
+            tar czf /backup/minecraft-data-$TODAY.tgz -C /minecraft-data mod-list.txt config/ world/;
+            date;
+            /app/pgp-cloud-backup.sh;
+            date;
+            /app/pgp-cloud-housekeeping.sh;
+            date;
+            echo finished minecraft-backup"]
+            imagePullPolicy: IfNotPresent
+            #imagePullPolicy: Always
+            env:
+            - name: PGPCB_CONFIG_FILE
+              value: "/app/conf/.pcloud-config"
+            - name: PGPCB_PUBLIC_PGP_KEY_FILE
+              value: "/app/conf/encrypt-key.pub"
+            - name: PGPCB_LOCAL_FOLDER
+              value: "/backup"
+            - name: PGPCB_TEMP_FOLDER
+              value: "/tmp"
+            - name: PGPCB_REMOTE_FOLDER
+              value: "/VSERVERBACKUP/minecraft"
+            - name: PGPCB_DELETE_REMOTE
+              value: "false"
+            - name: PGPCB_KEEP_PERIODS
+              value: "7d4w3m*y"
+            - name: PGPCB_IGNORE_MISSING_TIMESTAMPS
+              value: "false"
+            volumeMounts:
+            - mountPath: /backup
+              name: backup
+            - name: config
+              mountPath: "/app/conf"
+              readOnly: true
+            - mountPath: /minecraft-data
+              name: minecraft-data
+          volumes:
+          - name: backup
+            persistentVolumeClaim:
+              claimName: minecraft-backup-pvc
+          - name: config
+            secret:
+              secretName: minecraft-backup-secret
+          - name: minecraft-data
+            persistentVolumeClaim:
+              claimName: minecraft-pvc
+          restartPolicy: Never
+      backoffLimit: 3

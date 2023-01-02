@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-app-ingress
+  namespace: dev
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "demo.k8s.hechler.de"
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: hello-service
+              port:
+                number: 80
