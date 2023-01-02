@@ -10,7 +10,7 @@ Execute as root user:
 ```
 curl -O https://raw.githubusercontent.com/ferenc-hechler/vserver-scripts/main/setup-scripts/01-create-user.sh
 chmod u+x 01-create-user.sh
-./create-user.sh ferenc
+./01-create-user.sh <username>
    <enter hidden password>
 
 # cleanup
