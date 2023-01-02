@@ -6,11 +6,9 @@ metadata:
   labels:
     app: minecraft
 spec:
-  type: LoadBalancer
   selector:
     app: minecraft
   ports:
   - port: 25565
     targetPort: 25565
     protocol: TCP
-  
