@@ -212,3 +212,140 @@ NAME                                 DESIRED   CURRENT   READY   AGE
 replicaset.apps/demoapp-6fc94d4576   1         1         1       12s
 ```
 
+# Velero with Restic
+
+```
+velero install \
+    --provider aws \
+    --plugins velero/velero-plugin-for-aws:v1.2.1 \
+    --bucket velero \
+    --secret-file ./credentials-velero \
+    --use-volume-snapshots=true \
+    --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=http://minio-api-service.minio.svc:80 \
+    --snapshot-location-config region="minio" \
+    --use-restic
+```
+
+## backup Persist-Demo
+
+annotate pods in deployment:
+
+```
+  annotations:
+    backup.velero.io/backup-volumes: persist-volume
+```
+    
+
+``` 
+velero backup create persistdemo-backup-4 --include-namespaces persistdemo --ttl 1h --snapshot-volumes 
+```
+
+wait until finished
+
+```
+$ velero backup describe persistdemo-backup-4 --details
+
+Name:         persistdemo-backup-4
+Namespace:    velero
+Labels:       velero.io/storage-location=default
+Annotations:  velero.io/source-cluster-k8s-gitversion=v1.26.0
+              velero.io/source-cluster-k8s-major-version=1
+              velero.io/source-cluster-k8s-minor-version=26
+
+Phase:  Completed
+
+Errors:    0
+Warnings:  0
+
+Namespaces:
+  Included:  persistdemo
+  Excluded:  <none>
+
+Resources:
+  Included:        *
+  Excluded:        <none>
+  Cluster-scoped:  auto
+
+Label selector:  <none>
+
+Storage Location:  default
+
+Velero-Native Snapshot PVs:  true
+
+TTL:  1h0m0s
+
+Hooks:  <none>
+
+Backup Format Version:  1.1.0
+
+Started:    2023-01-05 20:02:52 +0100 CET
+Completed:  2023-01-05 20:03:08 +0100 CET
+
+Expiration:  2023-01-05 21:02:52 +0100 CET
+
+Total items to be backed up:  64
+Items backed up:              64
+
+Resource List:  <error getting backup resource list: Get "http://minio-api-service.minio.svc:80/velero/backups/persistdemo-backup-4/persistdemo-backup-4-resource-list.json.gz?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=hKzG7K5KsXokIHV6%2F20230105%2Fminio%2Fs3%2Faws4_request&X-Amz-Date=20230105T190318Z&X-Amz-Expires=600&X-Amz-SignedHeaders=host&X-Amz-Signature=4830086f215d0e6a2a605c344a207ee9479b13f2ae7f12b3748749a13daa2441": dial tcp: lookup minio-api-service.minio.svc on 127.0.0.53:53: no such host>
+
+Velero-Native Snapshots: <none included>
+
+Restic Backups:
+  Completed:
+    persistdemo/persistdemo-ff7b8bdbb-rwd6t: persist-volume
+```
+
+## delete persistdemo namespace
+
+```
+$ kubectl delete -f 99-persistdemo/.
+
+deployment.apps "persistdemo" deleted
+persistentvolumeclaim "persist-volume-pvc" deleted
+
+$ kubectl delete namespace persistdemo
+
+namespace "persistdemo" deleted
+
+```
+
+## restore persistdemo
+
+```
+velero restore create persistdemo-restore-1 --from-backup persistdemo-backup-4 --include-namespaces persistdemo
+```
+
+```
+velero restore describe persistdemo-restore-1
+Name:         persistdemo-restore-1
+Namespace:    velero
+...
+Restic Restores (specify --details for more information):
+  Completed:  1
+...
+```
+
+Check that the files (12MB jar) were restored:
+
+```
+kubectl logs persistdemo-ff7b8bdbb-rwd6t
++ true
++ ls -la /persist-volume
+starting persistdemo
+total 12488
+drwxrwxrwx    2 root     root          4096 Jan  5 18:52 .
+drwxr-xr-x    1 root     root          4096 Jan  5 19:02 ..
+-rwxr-xr-x    1 root     root      12775315 Jan  5 18:52 pgpcloudbackup.jar
+-rw-r--r--    1 root     root           203 Jan  5 18:58 timestamp.txt
++ cat /persist-volume/timestamp.txt
+Thu Jan  5 18:38:28 UTC 2023
+Thu Jan  5 18:39:37 UTC 2023
+Thu Jan  5 18:40:28 UTC 2023
+Thu Jan  5 18:45:28 UTC 2023
+Thu Jan  5 18:50:28 UTC 2023
+Thu Jan  5 18:55:28 UTC 2023
+Thu Jan  5 18:58:39 UTC 2023
++ date
++ sleep 300
+```
+
