@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demoapp-ingress
+  namespace: demoapp
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: "demoapp.k8s.feri.ai"
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: demoapp-service
+              port:
+                number: 80

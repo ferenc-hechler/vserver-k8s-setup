@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: persistdemo
+  namespace: persistdemo
+spec:
+  selector:
+    matchLabels:
+      app: persistdemo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: persistdemo
+    spec:
+      containers:
+      - name: persistdemo
+        image: "feridock/pgpcloudbackup:0.1"
+        command: [ "/bin/sh", "-c", "--" ]
+        args: [ "echo starting persistdemo;
+            set -x;
+            while true; 
+            do 
+              ls -la /persist-volume;
+              cat /persist-volume/timestamp.txt || true; 
+              date >> /persist-volume/timestamp.txt;
+              sleep 300;
+            done;
+            echo never finish"]
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /persist-volume
+          name: persist-volume
+      volumes:
+      - name: persist-volume
+        persistentVolumeClaim:
+          claimName: persist-volume-pvc
