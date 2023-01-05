@@ -6,8 +6,6 @@ metadata:
   labels:
     app: minecraft-backup
 spec:
-
-spec:
   schedule: "15 3 * * *"
   jobTemplate:
     spec:

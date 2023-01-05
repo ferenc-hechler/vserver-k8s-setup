@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: minio-backup-cronjob
+  namespace: minio
+  labels:
+    app: minio-backup
+spec:
+  schedule: "30 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: minio-backup
+            image: feridock/pgpcloudbackup:0.1
+            command: [ "/bin/sh", "-c", "--" ]
+            args: [ "echo starting remote sync of minio-data;
+            set -x;
+            date;
+            /app/pgp-cloud-backup.sh;
+            date;
+            echo finished minio-backup"]
+            imagePullPolicy: IfNotPresent
+            #imagePullPolicy: Always
+            env:
+            - name: PGPCB_CONFIG_FILE
+              value: "/app/conf/.pcloud-config"
+            - name: PGPCB_PUBLIC_PGP_KEY_FILE
+              value: "/app/conf/encrypt-key.pub"
+            - name: PGPCB_LOCAL_FOLDER
+              value: "/minio-data"
+            - name: PGPCB_TEMP_FOLDER
+              value: "/tmp"
+            - name: PGPCB_REMOTE_FOLDER
+              value: "/VSERVERBACKUP/minio"
+            - name: PGPCB_DELETE_REMOTE
+              value: "true"
+            volumeMounts:
+            - name: config
+              mountPath: "/app/conf"
+              readOnly: true
+            - mountPath: /minio-data
+              name: minio-data
+          volumes:
+          - name: config
+            secret:
+              secretName: minio-backup-secret
+          - name: minio-data
+            persistentVolumeClaim:
+              claimName: minio-data-pvc
+          restartPolicy: Never
+      backoffLimit: 3

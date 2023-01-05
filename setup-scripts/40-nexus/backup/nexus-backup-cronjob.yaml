@@ -6,8 +6,6 @@ metadata:
   labels:
     app: nexus-backup
 spec:
-
-spec:
   schedule: "30 3 * * *"
   jobTemplate:
     spec:
