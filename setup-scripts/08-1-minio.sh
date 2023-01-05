@@ -17,6 +17,7 @@ kubectl apply -f 08-minio/minio-api-service.yaml
 kubectl apply -f 08-minio/minio-ingress.yaml
 kubectl apply -f 08-minio/minio-api-ingress.yaml
 
+kubectl delete -f 08-minio/init/create-velero-user-and-buckets.yaml >/dev/null 2>&1  || true
 kubectl apply -f 08-minio/init/create-velero-user-and-buckets.yaml
 
 echo
