@@ -7,15 +7,8 @@
 set -xev
 cd $(dirname -- $0)
 
-kubectl create namespace minio || true
-
-if kubectl get secret -n minio minio-admin-secret >/dev/null 2>&1
-then
-    echo "secret already exists"
-else
-    MINIO_PASSWORD=$(date +VS%s | sha256sum | base64 | head -c 16)
-	kubectl create secret generic -n minio minio-admin-secret --from-literal=admin-password="$MINIO_PASSWORD"
-fi
+MINIO_PASSWORD=$(00-utils/define-password.sh minio minio-admin-secret admin-password)
+VELEROUSER_PASSWORD=$(00-utils/define-password.sh minio velerouser-secret velerouser-password)
 
 kubectl apply -f 08-minio/minio-pvc.yaml
 kubectl apply -f 08-minio/minio-statefulset.yaml
@@ -24,7 +17,7 @@ kubectl apply -f 08-minio/minio-api-service.yaml
 kubectl apply -f 08-minio/minio-ingress.yaml
 kubectl apply -f 08-minio/minio-api-ingress.yaml
 
-kubectl apply -f 08-minio/init/create-backup-bucket.yaml
+kubectl apply -f 08-minio/init/create-velero-user-and-buckets.yaml
 
 echo
 echo "to get the minio admin password use:" 

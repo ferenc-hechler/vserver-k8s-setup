@@ -3,13 +3,13 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   namespace: minio
-  name: minio-setup
+  name: test-mc
   labels:
     app: minio
 spec:
   template:
     metadata:
-      name: minio-setup
+      name: test-mc
     spec:
       restartPolicy: Never
       volumes:
@@ -22,7 +22,7 @@ spec:
         command:
         - /bin/sh
         - -c
-        - " mc --config-dir=/config config host add local-minio http://minio-api-service:80 $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD && mc --config-dir=/config mb -p local-minio/backup-bucket"
+        - "sleep 3600"
         env:
         - name: MINIO_ROOT_USER
           value: admin
