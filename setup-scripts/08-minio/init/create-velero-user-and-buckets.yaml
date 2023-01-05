@@ -40,5 +40,5 @@ spec:
         - name: VELERO_USER_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: valerouser-secret
+              name: velerouser-secret
               key: velerouser-password        
