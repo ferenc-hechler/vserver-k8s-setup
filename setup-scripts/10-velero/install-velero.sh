@@ -18,17 +18,35 @@ aws_access_key_id = velerouser
 aws_secret_access_key = $VELEROUSER_PASSWORD
 EOF
 
+#velero install \
+#    --provider aws \
+#    --plugins velero/velero-plugin-for-aws:v1.2.1 \
+#    --bucket velero-backup \
+#    --secret-file ./credentials-velero \
+#    --use-volume-snapshots=true \
+#    --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=http://minio-api-service.minio.svc:80 \
+#    --snapshot-location-config region="minio",s3ForcePathStyle="true",s3Url=http://minio-api-service.minio.svc:80 \
+#    --use-restic
+
 velero install \
     --provider aws \
     --plugins velero/velero-plugin-for-aws:v1.2.1 \
-    --bucket velero-backup \
+    --bucket velero \
     --secret-file ./credentials-velero \
     --use-volume-snapshots=true \
-    --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=http://minio-api-service.minio.svc:80 \
-    --snapshot-location-config bucket=velero-snapshots,region="minio",s3ForcePathStyle="true",s3Url=http://minio-api-service.minio.svc:80 \
+    --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=https://s3.k8s.feri.ai:443 \
+    --snapshot-location-config region="minio" \
     --use-restic
+
     
-velero snapshot-location create snapsloc --provider aws --config bucket=velero-snapshots,region=minio,s3ForcePathStyle="true",s3Url=http://minio-api-service.minio.svc:80
+
+#    --snapshot-location-config bucket=velero-snapshots,region="minio",s3ForcePathStyle="true",s3Url=http://minio-api-service.minio.svc:80 \
+
+# velero snapshot-location create snapsloc --provider aws --config bucket=velero-snapshots,region=minio,s3ForcePathStyle="true",s3Url=http://minio-api-service.minio.svc:80
 
 
 # velero backup create persistdemo-backup-9 --include-namespaces persistdemo --ttl 1h --snapshot-volumes --volume-snapshot-locations snapsloc 
+
+velero schedule create daily-backup --schedule="40 * * * *" --snapshot-volumes
+ 
+
