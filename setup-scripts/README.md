@@ -101,7 +101,7 @@ Infos
 
 
 ```
-~/git/vserver-k8s-setup/setup-scripts/08-minio.sh
+~/git/vserver-k8s-setup/setup-scripts/08-1-minio.sh
 ```
 
 # Applikationen
