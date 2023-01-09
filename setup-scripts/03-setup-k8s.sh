@@ -100,8 +100,8 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # allow master/control-plane node to run workloads
 
-# before k8s 1.26: kubectl taint nodes --all node-role.kubernetes.io/master-
-kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+# since k8s 1.26: kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+kubectl taint nodes --all node-role.kubernetes.io/master-
 
 # Install a CNI plugin
 
