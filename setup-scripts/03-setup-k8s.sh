@@ -5,6 +5,7 @@
 set -xev
 
 K8S_VERSION=1.24
+KUBEADM_VERSION=1.24.9-00
 
 cd ~
 
@@ -71,7 +72,7 @@ echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https:/
 sudo apt-get update
 
 ## this may take a while
-sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-get install -y kubelet kubeadm=$KUBEADM_VERSION kubectl
 
 # Prevent them from being updated automatically
 sudo apt-mark hold kubelet kubeadm kubectl
