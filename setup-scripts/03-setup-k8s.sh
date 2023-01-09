@@ -3,6 +3,9 @@
 # from: https://blog.radwell.codes/2022/07/single-node-kubernetes-cluster-via-kubeadm-on-ubuntu-22-04/
 
 set -xev
+
+K8S_VERSION=1.24
+
 cd ~
 
 # Install general dependencies
@@ -86,7 +89,7 @@ sudo sed -i -e '/swap/d' /etc/fstab
 
 ## Create the cluster using kubeadm
 
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --kubernetes-version="$K8S_VERSION"
 
 # setup kubectl
 
