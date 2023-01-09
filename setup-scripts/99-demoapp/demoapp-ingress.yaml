@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: "demoapp.k8s.feri.ai"
+  - host: "demoapp.k8s2.feri.ai"
     http:
       paths:
         - pathType: Prefix

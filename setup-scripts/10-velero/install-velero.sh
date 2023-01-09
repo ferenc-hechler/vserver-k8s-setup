@@ -34,7 +34,7 @@ velero install \
     --bucket velero \
     --secret-file ./credentials-velero \
     --use-volume-snapshots=true \
-    --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=https://s3.k8s.feri.ai:443 \
+    --backup-location-config region=minio,s3ForcePathStyle="true",s3Url=https://s3.k8s2.feri.ai:443 \
     --snapshot-location-config region="minio" \
     --use-restic
 

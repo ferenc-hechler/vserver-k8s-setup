@@ -11,9 +11,9 @@ spec:
   tls:
     - secretName: dashboard-ssl
       hosts:
-      - dashboard.k8s.feri.ai 
+      - dashboard.k8s2.feri.ai 
   rules:
-  - host: "dashboard.k8s.feri.ai"
+  - host: "dashboard.k8s2.feri.ai"
     http:
       paths:
         - pathType: Prefix

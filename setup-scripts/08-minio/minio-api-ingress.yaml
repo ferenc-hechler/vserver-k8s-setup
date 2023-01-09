@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: minio-api-ssl
       hosts:
-      - s3.k8s.feri.ai              
+      - s3.k8s2.feri.ai              
   rules:
-  - host: "s3.k8s.feri.ai"
+  - host: "s3.k8s2.feri.ai"
     http:
       paths:
         - pathType: Prefix

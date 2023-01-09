@@ -10,9 +10,9 @@ spec:
   tls:
     - secretName: demo6-ssl
       hosts:
-      - demo6.k8s.feri.ai               
+      - demo6.k8s2.feri.ai               
   rules:
-  - host: "demo6.k8s.feri.ai"
+  - host: "demo6.k8s2.feri.ai"
     http:
       paths:
         - pathType: Prefix
