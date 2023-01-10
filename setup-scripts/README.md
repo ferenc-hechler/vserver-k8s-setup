@@ -161,3 +161,24 @@ kubernetes-changelogs
 https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG
 
 
+# Troubleshooting
+
+https://github.com/geerlingguy/ansible-role-containerd/issues/2
+https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/configure-cgroup-driver/#configuring-the-kubelet-cgroup-driver
+
+
+
+```
+# kubeadm-config.yaml
+kind: ClusterConfiguration
+apiVersion: kubeadm.k8s.io/v1beta3
+kubernetesVersion: v1.19.0
+---
+kind: KubeletConfiguration
+apiVersion: kubelet.config.k8s.io/v1beta1
+cgroupDriver: systemd
+```
+
+```
+kubeadm init --config kubeadm-config.yaml
+```
