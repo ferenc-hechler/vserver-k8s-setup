@@ -20,9 +20,13 @@ curl -fsSLo containerd-config.toml https://gist.githubusercontent.com/oradwell/3
 sudo mkdir -p /etc/containerd
 sudo mv containerd-config.toml /etc/containerd/config.toml
 
-curl -fsSLo containerd-1.6.14-linux-amd64.tar.gz https://github.com/containerd/containerd/releases/download/v1.6.14/containerd-1.6.14-linux-amd64.tar.gz
+#curl -fsSLo containerd-1.6.14-linux-amd64.tar.gz https://github.com/containerd/containerd/releases/download/v1.6.14/containerd-1.6.14-linux-amd64.tar.gz
+### Extract the binaries
+#sudo tar Cxzvf /usr/local containerd-1.6.14-linux-amd64.tar.gz
+# version 1.5.7 released Oct 4, 2021
+curl -fsSLo containerd-1.5.7-linux-amd64.tar.gz https://github.com/containerd/containerd/releases/download/v1.5.7/containerd-1.5.7-linux-amd64.tar.gz
 ## Extract the binaries
-sudo tar Cxzvf /usr/local containerd-1.6.14-linux-amd64.tar.gz
+sudo tar Cxzvf /usr/local containerd-1.5.7-linux-amd64.tar.gz
 
 ## Install containerd as a service
 sudo curl -fsSLo /etc/systemd/system/containerd.service https://raw.githubusercontent.com/containerd/containerd/main/containerd.service
@@ -32,14 +36,21 @@ sudo systemctl enable --now containerd
 
 ## install runc
 
-curl -fsSLo runc.amd64 https://github.com/opencontainers/runc/releases/download/v1.1.3/runc.amd64
+#curl -fsSLo runc.amd64 https://github.com/opencontainers/runc/releases/download/v1.1.3/runc.amd64
+#sudo install -m 755 runc.amd64 /usr/local/sbin/runc
+# version 1.0.2 released Aug 23, 2021
+curl -fsSLo runc.amd64 https://github.com/opencontainers/runc/releases/download/v1.0.2/runc.amd64
 sudo install -m 755 runc.amd64 /usr/local/sbin/runc
 
 ## Install CNI network plugins
 
-curl -fsSLo cni-plugins-linux-amd64-v1.1.1.tgz https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz
+#curl -fsSLo cni-plugins-linux-amd64-v1.1.1.tgz https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz
+#sudo mkdir -p /opt/cni/bin
+#sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.1.1.tgz
+# v1.0.1 released Sep 7, 2021
+curl -fsSLo cni-plugins-linux-amd64-v1.0.1.tgz https://github.com/containernetworking/plugins/releases/download/v1.0.1/cni-plugins-linux-amd64-v1.0.1.tgz
 sudo mkdir -p /opt/cni/bin
-sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.1.1.tgz
+sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.0.1.tgz
 
 ## Forward IPv4 and let iptables see bridged network traffic
 

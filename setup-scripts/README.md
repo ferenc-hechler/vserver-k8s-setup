@@ -149,4 +149,15 @@ Infos
 ```
 
 
+# Version-Matrix:
+
+Istio:
+https://istio.io/latest/docs/releases/supported-releases/
+
+cri-tools:
+https://github.com/kubernetes-sigs/cri-tools#current-status
+
+kubernetes-changelogs
+https://github.com/kubernetes/kubernetes/tree/master/CHANGELOG
+
 
