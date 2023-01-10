@@ -102,7 +102,7 @@ sudo sed -i -e '/swap/d' /etc/fstab
 
 ## Create the cluster using kubeadm
 
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --kubernetes-version="$K8S_VERSION" --config ~/git/vserver-k8s-setup/setup-scripts/03-setup-k8s/kubeadm-config.yaml
+sudo kubeadm init --config ~/git/vserver-k8s-setup/setup-scripts/03-setup-k8s/kubeadm-config.yaml
 
 # setup kubectl
 
