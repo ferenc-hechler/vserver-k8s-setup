@@ -1,6 +1,6 @@
 # kubeadm-config.yaml
 kind: ClusterConfiguration
-apiVersion: kubeadm.k8s.io/v1beta3
+apiVersion: kubeadm.k8s.io/v1beta2
 kubernetesVersion: v1.19.0
 networking:
   podSubnet: "10.244.0.0/16" # --pod-network-cidr see https://github.com/kubernetes/kubeadm/issues/1899
