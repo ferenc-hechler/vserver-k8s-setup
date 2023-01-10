@@ -6,6 +6,7 @@ set -xev
 
 K8S_VERSION=1.19.0
 KUBEADM_VERSION=1.19.16-00
+CRITOOLS_VERSION=1.19.0-00
 
 cd ~
 
@@ -83,10 +84,10 @@ echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https:/
 sudo apt-get update
 
 ## this may take a while
-sudo apt-get install -y kubelet=$KUBEADM_VERSION kubeadm=$KUBEADM_VERSION kubectl=$KUBEADM_VERSION
+sudo apt-get install -y kubelet=$KUBEADM_VERSION kubeadm=$KUBEADM_VERSION kubectl=$KUBEADM_VERSION cri-tools=$CRITOOLS_VERSION
 
 # Prevent them from being updated automatically
-sudo apt-mark hold kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl cri-tools
 
 
 ## Ensure swap is disabled
