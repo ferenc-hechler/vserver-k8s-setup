@@ -9,7 +9,7 @@
 set -xev
 cd $(dirname -- $0)
 
-# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.1/deploy/static/provider/cloud/deploy.yaml
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.5/deploy/static/provider/cloud/deploy.yaml
 # customized to allow file uploads > 1MB
 
 kubectl apply -f 04-ingress-nginx/ingress-nginx-deploy.yaml

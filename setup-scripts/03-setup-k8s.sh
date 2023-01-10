@@ -103,6 +103,8 @@ sudo sed -i -e '/swap/d' /etc/fstab
 ## Create the cluster using kubeadm
 
 sudo kubeadm init --config ~/git/vserver-k8s-setup/setup-scripts/03-setup-k8s/kubeadm-config.yaml
+# --ignore-preflight-errors=FileAvailable--etc-kubernetes-manifests-kube-apiserver.yaml,FileAvailable--etc-kubernetes-manifests-kube-controller-manager.yaml,FileAvailable--etc-kubernetes-manifests-kube-scheduler.yaml,FileAvailable--etc-kubernetes-manifests-etcd.yaml,Port-10250
+# --v=5
 
 # setup kubectl
 
@@ -113,7 +115,8 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # allow master/control-plane node to run workloads
 
-kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+# since k8s 1.26: 
+# kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 # before k8s 1.26: 
 kubectl taint nodes --all node-role.kubernetes.io/master-
 
