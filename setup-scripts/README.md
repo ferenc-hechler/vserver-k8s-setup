@@ -150,3 +150,147 @@ Infos
 
 
 
+# install istio
+
+https://istio.io/latest/docs/setup/getting-started/
+
+```
+curl -L https://istio.io/downloadIstio | sh -
+    % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                   Dload  Upload   Total   Spent    Left  Speed
+  100   101  100   101    0     0    637      0 --:--:-- --:--:-- --:--:--   635
+  100  4856  100  4856    0     0  11252      0 --:--:-- --:--:-- --:--:-- 11252
+  
+  Downloading istio-1.16.1 from https://github.com/istio/istio/releases/download/1.16.1/istio-1.16.1-linux-amd64.tar.gz ...
+  
+  Istio 1.16.1 Download Complete!
+  
+  Istio has been successfully downloaded into the istio-1.16.1 folder on your system.
+  
+  Next Steps:
+  See https://istio.io/latest/docs/setup/install/ to add Istio to your Kubernetes cluster.
+  
+  To configure the istioctl client tool for your workstation,
+  add the /home/ferenc/git/vserver-k8s-setup/setup-scripts/istio-1.16.1/bin directory to your environment path variable with:
+           export PATH="$PATH:/home/ferenc/git/vserver-k8s-setup/setup-scripts/istio-1.16.1/bin"
+  
+  Begin the Istio pre-installation check by running:
+           istioctl x precheck
+  
+  Need more information? Visit https://istio.io/latest/docs/setup/install/
+  
+cd istio-1.16.1
+export PATH=$PWD/bin:$PATH
+istioctl install --set profile=demo -y    
+
+kubectl label namespace default istio-injection=enabled
+
+kubectl get ns -L istio-injection
+  NAME              STATUS   AGE     ISTIO-INJECTION
+  cert-manager      Active   6m49s
+  default           Active   8m5s    enabled
+  demoapp           Active   81s
+  istio-system      Active   2m42s
+  kube-flannel      Active   8m2s
+  kube-node-lease   Active   8m7s
+  kube-public       Active   8m7s
+  kube-system       Active   8m7s
+  openebs           Active   7m59s
+
+kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+
+kubectl get services
+  NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+  details       ClusterIP   10.111.95.121    <none>        9080/TCP   18s
+  kubernetes    ClusterIP   10.96.0.1        <none>        443/TCP    8m51s
+  productpage   ClusterIP   10.109.62.122    <none>        9080/TCP   18s
+  ratings       ClusterIP   10.109.147.154   <none>        9080/TCP   18s
+  reviews       ClusterIP   10.109.21.187    <none>        9080/TCP   18s
+
+kubectl get pods
+  NAME                             READY   STATUS    RESTARTS   AGE
+  details-v1-6997d94bb9-5ldm8      2/2     Running   0          63s
+  productpage-v1-d4f8dfd97-dd8mb   2/2     Running   0          63s
+  ratings-v1-b8f8fcf49-62qdj       2/2     Running   0          63s
+  reviews-v1-5896f547f5-xznb9      2/2     Running   0          63s
+  reviews-v2-5d99885bc9-fc9gt      2/2     Running   0          63s
+  reviews-v3-589cb4d56c-7tkwh      2/2     Running   0          63s
+
+
+kubectl exec "$(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metadata.name}')" -c ratings -- curl -sS productpage:9080/productpage | grep -o "<title>.*</title>"
+
+kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+
+istioctl analyze
+
+kubectl get svc istio-ingressgateway -n istio-system
+
+export INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+export SECURE_INGRESS_PORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
+
+export PUBLIC_IP=$(curl ident.me)
+
+sudo nohup socat TCP-LISTEN:80,fork TCP:$PUBLIC_IP:$INGRESS_PORT  >/dev/null 2>&1 &
+sudo nohup socat TCP-LISTEN:443,fork TCP:$PUBLIC_IP:$SECURE_INGRESS_PORT  >/dev/null 2>&1 &
+
+[in browser] http://k8s2.feri.ai/productpage
+```
+
+Install Kiali, Prometheus and Grafana
+
+```
+kubectl apply -f samples/addons
+```
+
+open kiali dashboard
+
+```
+istioctl dashboard kiali
+  http://localhost:20001/kiali
+  Failed to open browser; open http://localhost:20001/kiali in your browser.
+
+[in another terminal]
+sudo nohup socat TCP-LISTEN:8080,fork TCP:localhost:20001  >/dev/null 2>&1 &
+
+[in browser] k8s2.feri.ai:8080/kiali/
+```
+
+Generate traffic
+
+```
+GATEWAY_URL=k8s2.feri.ai
+
+for i in $(seq 1 100); do curl -s -o /dev/null "http://$GATEWAY_URL/productpage"; done
+```
+
+### cleanup
+
+remove bookapp
+
+```
+samples/bookinfo/platform/kube/cleanup.sh
+```
+
+remove addons
+
+```
+kubectl delete -f samples/addons
+```
+
+remove istio
+
+```
+istioctl uninstall -y --purge
+```
+
+```
+kubectl delete namespace istio-system
+kubectl label namespace default istio-injection-
+```
+
+Open jaeger dashboard at same port:
+
+```
+istioctl dashboard jaeger -p 20001 --browser=false
+```
+
