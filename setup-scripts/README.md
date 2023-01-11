@@ -212,6 +212,20 @@ helm install istiod istio/istiod -n istio-system --version $ISTIO_VERSION
 kubectl create namespace nginx-ingress
 kubectl label namespace nginx-ingress istio-injection=enabled
 
-	
+
+kubectl apply -f 04-ingress-nginx/ingress-nginx-istio-deploy.yaml 
 
 ```
+injection did not work.
+looking at the values:
+
+```
+helm show values istio/base
+```
+
+delete istio crds:
+
+```
+kubectl get crd -oname | grep --color=never 'istio.io' | xargs kubectl delete
+```
+
