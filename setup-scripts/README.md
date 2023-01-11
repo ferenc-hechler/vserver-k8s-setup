@@ -187,3 +187,31 @@ cgroupDriver: systemd
 ```
 kubeadm init --config kubeadm-config.yaml
 ```
+
+# Istio
+
+https://docs.nginx.com/nginx-ingress-controller/tutorials/nginx-ingress-istio/
+
+https://istio.io/latest/docs/releases/supported-releases/#support-status-of-istio-releases
+https://artifacthub.io/packages/helm/istio-official/gateway
+select  version 1.12.9
+
+```
+ISTIO_VERSION=1.12.9
+
+helm repo add istio https://istio-release.storage.googleapis.com/charts
+helm repo update
+
+kubectl create namespace istio-system
+
+helm install istio-base istio/base -n istio-system --version $ISTIO_VERSION
+
+helm install istiod istio/istiod -n istio-system --version $ISTIO_VERSION
+
+
+kubectl create namespace nginx-ingress
+kubectl label namespace nginx-ingress istio-injection=enabled
+
+	
+
+```
