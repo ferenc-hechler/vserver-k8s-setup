@@ -27,12 +27,21 @@ login as newly created user
 curl https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/main/setup-scripts/02-clone-repo.sh | bash
 ```
 
-# All following steps (except backup & restore) 
+## checkout branch for 1.19
+
+```
+cd ~/git/vserver-k8s-setup
+git checkout kubernetes-1-19
+```
+
+
+
+# (All following steps (except backup & restore) - not yet for 1.19) 
 
 The steps can be executed each or all together with the following command:
 
 ```
-~/git/vserver-k8s-setup/setup-scripts/xx-run-all-scripts.sh
+# ~/git/vserver-k8s-setup/setup-scripts/xx-run-all-scripts.sh
 ```
 
 
@@ -48,7 +57,35 @@ To execute kubectl from a local PC the content of ~/.kube/config has to be copie
 the local filesystem ~/.kube/config
 
 
-# Step 4 - Ingress NginX
+# Step 4a - Istio
+
+https://istio.io/latest/docs/setup/getting-started/#download
+
+```
+ISTIO_VERSION=1.12.9
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=$ISTIO_VERSION sh -
+```
+
+https://istio.io/latest/docs/setup/getting-started/#download
+
+```
+istioctl install -y
+# istioctl install --set profile=demo -y
+```
+
+## make public accessible 
+
+```
+export PUBLIC_IP=$(curl ident.me)
+export HTTP_NODEPORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="http2")].nodePort}')
+export HTTPS_NODEPORT=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.spec.ports[?(@.name=="https")].nodePort}')
+
+sudo nohup socat TCP-LISTEN:80,fork TCP:$PUBLIC_IP:$HTTP_NODEPORT  >/dev/null 2>&1 &
+sudo nohup socat TCP-LISTEN:443,fork TCP:$PUBLIC_IP:$HTTPS_NODEPORT  >/dev/null 2>&1 &
+```
+
+
+# Step 4b - Ingress NginX
 
 ## 4-1 install ingress-nginx
 
