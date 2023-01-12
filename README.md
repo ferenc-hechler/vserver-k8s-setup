@@ -70,4 +70,9 @@ spec:
       mode: SIMPLE
 ```
 
+# ODA
+
+http://components.oda.cluster-1.de/r1-productcatalog/tmf-api/partyRoleManagement/v4/docs/
+
+modified gateway to not  have host "*".
 
