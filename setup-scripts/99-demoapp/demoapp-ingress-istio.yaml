@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demoapp-ingress
+  namespace: demoapp
+  labels:
+    app: demoapp
+spec:
+  ingressClassName: istio
+  rules:
+  - host: demoapp.k8s2.feri.ai
+    http:
+      paths:
+      - backend:
+          service:
+            name: demoapp-service
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - demoapp.k8s2.feri.ai
+    secretName: wc-k8s2-feri-ai-tls
+  
