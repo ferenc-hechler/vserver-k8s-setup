@@ -294,3 +294,20 @@ Open jaeger dashboard at same port:
 istioctl dashboard jaeger -p 20001 --browser=false
 ```
 
+## Older Istio versions
+
+https://istio.io/v1.12/docs/setup/getting-started/
+
+```
+curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.12.9 sh -
+```
+
+
+# CheckDomain and LetsEncrypt
+
+https://go-acme.github.io/lego/dns/checkdomain/
+
+https://developer.checkdomain.de/guide/#first-steps-and-setup
+
+https://medium.com/@rd.petrusek/kubernetes-istio-cert-manager-and-lets-encrypt-c3e0822a3aaf
+

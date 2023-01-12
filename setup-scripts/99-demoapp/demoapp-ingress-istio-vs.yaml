@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  namespace: demoapp
+  name: demoapp-vs
+  labels:
+    app: demoapp
+spec:
+  gateways:
+  - istio-system/k8s2-gateway
+  hosts:
+  - 'demoapp.k8s2.feri.ai'
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: demoapp-service.demoapp.svc.cluster.local
+        port:
+          number: 80

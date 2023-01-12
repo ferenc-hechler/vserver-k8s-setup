@@ -1,0 +1,41 @@
+# from https://medium.com/@rd.petrusek/kubernetes-istio-cert-manager-and-lets-encrypt-c3e0822a3aaf
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: k8s2-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "demoapp.k8s2.feri.ai"
+    - "dashboard.k8s2.feri.ai"
+    - "grafana.k8s2.feri.ai"
+    - "jaeger.k8s2.feri.ai"
+    - "kiali.k8s2.feri.ai"
+    - "minecraft.k8s2.feri.ai"
+    - "minio.k8s2.feri.ai"
+    - "nexus.k8s2.feri.ai"
+    - "s3.k8s2.feri.ai"
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: k8s2-cert
+    hosts:
+    - "demoapp.k8s2.feri.ai"
+    - "dashboard.k8s2.feri.ai"
+    - "grafana.k8s2.feri.ai"
+    - "jaeger.k8s2.feri.ai"
+    - "kiali.k8s2.feri.ai"
+    - "minecraft.k8s2.feri.ai"
+    - "minio.k8s2.feri.ai"
+    - "nexus.k8s2.feri.ai"
+    - "s3.k8s2.feri.ai"
