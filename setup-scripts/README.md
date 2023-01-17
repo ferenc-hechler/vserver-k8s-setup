@@ -311,3 +311,16 @@ https://developer.checkdomain.de/guide/#first-steps-and-setup
 
 https://medium.com/@rd.petrusek/kubernetes-istio-cert-manager-and-lets-encrypt-c3e0822a3aaf
 
+
+# Uninstall Kubernetes (kubeadm)
+
+https://stackoverflow.com/questions/44698283/how-to-completely-uninstall-kubernetes
+
+```
+kubeadm reset
+sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*   
+sudo apt-get autoremove  
+sudo rm -rf ~/.kube
+```
+
+
