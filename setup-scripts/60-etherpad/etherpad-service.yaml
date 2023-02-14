@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: etherpad-service
+  namespace: etherpad
+  labels:
+    app: etherpad
+spec:
+  selector:
+    app: etherpad
+  ports:
+  - port: 80
+    targetPort: 9001
+    protocol: TCP  
