@@ -5,3 +5,16 @@ singleuser:
   extraEnv:
     GRANT_SUDO: "yes"
     NOTEBOOK_ARGS: "--allow-root"
+
+hub:
+  revisionHistoryLimit:
+  config:
+    Authenticator:
+      admin_users:
+        - feri
+      #allowed_users:
+      #  - user3
+      #  - user4
+    # ...
+    DummyAuthenticator:
+      password: katrIn

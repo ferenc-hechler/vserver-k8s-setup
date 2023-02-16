@@ -40,15 +40,6 @@ imagePullSecrets: []
 hub:
   revisionHistoryLimit:
   config:
-    Authenticator:
-      admin_users:
-        - feri
-      #allowed_users:
-      #  - user3
-      #  - user4
-    # ...
-    DummyAuthenticator:
-      password: katrIn
     JupyterHub:
       admin_access: true
       authenticator_class: dummy
