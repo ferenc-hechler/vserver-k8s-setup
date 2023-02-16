@@ -16,6 +16,6 @@ spec:
         prefix: /
     route:
     - destination:
-        host: jupyter-svc.spark.svc.cluster.local
+        host: proxy-public.spark.svc.cluster.local
         port:
           number: 80
