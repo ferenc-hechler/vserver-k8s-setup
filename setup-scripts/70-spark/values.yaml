@@ -398,11 +398,7 @@ worker:
   ## @param worker.hostAliases Add deployment host aliases
   ## https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/
   ##
-  #hostAliases: []
-  hostAliases: 
-    - ip: "10.244.0.80"
-      hostnames:
-      - "jupyter-feri"
+  hostAliases: []
   ## @param worker.extraContainerPorts Specify the port where the running jobs inside the workers listens
   ## ref: https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#containerport-v1-core
   ## e.g:
