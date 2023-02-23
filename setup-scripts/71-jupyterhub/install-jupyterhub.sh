@@ -11,6 +11,8 @@ helm upgrade --install jupyter jupyterhub/jupyterhub --namespace spark --create-
 
 kubectl apply -f jupyter-vs.yaml
 
+# helm upgrade --install jupyter --values values.yaml  jupyterhub/jupyterhub --namespace spark
+
 # kubectl delete -f jupyter-vs.yaml
 # helm uninstall -n spark jupyter
  

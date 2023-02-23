@@ -671,3 +671,16 @@ debug:
 global:
   safeToShowValues: false
 ```
+
+
+# install java
+
+```
+apt-get update
+apt install default-jre
+apt-get install procps
+apt install wget
+
+cd /usr/local/lib/python3.9/site-packages/pyspark/jars
+wget https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.1/hadoop-aws-3.3.1.jar
+```

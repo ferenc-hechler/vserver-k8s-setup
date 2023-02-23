@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox3
+  namespace: spark
+spec:
+  containers:
+  - image: busybox:1.28
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+    name: busybox3
+  restartPolicy: Always
+  hostname: busybox3
+  dnsPolicy: ClusterFirstWithHostNet
+  hostNetwork: false
+  #dnsPolicy: ClusterFirstWithHostNet
+  
