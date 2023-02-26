@@ -2,14 +2,14 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   namespace: jupyter
-  name: jupyter15-vs
+  name: jupyter12-vs
   labels:
-    app: jupyter15
+    app: jupyter12
 spec:
   gateways:
   - istio-system/vps2-gateway
   hosts:
-  - 'jupyter15.vps2.cluster-1.de'
+  - 'jupyter12.vps2.cluster-1.de'
   http:
   - match:
     - uri:

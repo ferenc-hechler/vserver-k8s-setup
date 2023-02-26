@@ -7,7 +7,7 @@ cd $(dirname -- $0)
 
 helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 helm repo update
-helm upgrade --install jupyter jupyterhub/jupyterhub --namespace spark --create-namespace
+helm upgrade --install jupyter jupyterhub/jupyterhub --values values.yaml  --namespace spark --create-namespace
 
 kubectl apply -f jupyter-vs.yaml
 

@@ -5,14 +5,14 @@ singleuser:
   #extraEnv:
   #  GRANT_SUDO: "yes"
   #  NOTEBOOK_ARGS: "--allow-root"
-  #cmd: start-singleuser.sh    
+  cmd: start-singleuser.sh    
   image:
     #name: jupyterhub/k8s-singleuser-sample
     #tag: "1.2.0"
-    # https://github.com/jupyter/docker-stacks/blob/main/pyspark-notebook/Dockerfile
     name: jupyter/pyspark-notebook
     tag: "spark-3.3.1"
-    
+
+
 hub:
   config:
     Authenticator:

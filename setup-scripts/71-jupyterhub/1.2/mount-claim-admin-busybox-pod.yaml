@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mount-claim-admin
+  namespace: jupyter
+spec:
+  containers:
+  - image: busybox:1.28
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+    name: mount-claim-admin
+    volumeMounts:
+    - mountPath: /claim-admin
+      name: claim-admin
+  volumes:
+  - name: claim-admin
+    persistentVolumeClaim:
+      claimName: claim-admin
+  restartPolicy: Never
+  hostname: ""
+  dnsPolicy: ClusterFirst
+  #hostNetwork: true
+  #dnsPolicy: ClusterFirstWithHostNet
+  
+  
