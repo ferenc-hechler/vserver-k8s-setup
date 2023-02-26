@@ -1,0 +1,264 @@
+C:\Users\feri\git\vserver-k8s-setup\setup-scripts\71-jupyterhub>kubectl get pods -n jupyter jupyter-feri -oyaml
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    hub.jupyter.org/username: feri
+  creationTimestamp: "2023-02-26T15:12:37Z"
+  labels:
+    app: jupyterhub
+    chart: jupyterhub-2.0.0
+    component: singleuser-server
+    heritage: jupyterhub
+    hub.jupyter.org/network-access-hub: "true"
+    hub.jupyter.org/servername: ""
+    hub.jupyter.org/username: feri
+    release: jupyter
+  name: jupyter-feri
+  namespace: jupyter
+  resourceVersion: "11232604"
+  uid: a66a8e66-ea9c-4978-b065-d7615ec08954
+spec:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - preference:
+          matchExpressions:
+          - key: hub.jupyter.org/node-purpose
+            operator: In
+            values:
+            - user
+        weight: 100
+  automountServiceAccountToken: false
+  containers:
+  - args:
+    - jupyterhub-singleuser
+    env:
+    - name: GRANT_SUDO
+      value: "yes"
+    - name: JPY_API_TOKEN
+      value: fd5a076ad9204f73897459d2b847a517
+    - name: JUPYTERHUB_ACTIVITY_URL
+      value: http://hub:8081/hub/api/users/feri/activity
+    - name: JUPYTERHUB_ADMIN_ACCESS
+      value: "1"
+    - name: JUPYTERHUB_API_TOKEN
+      value: fd5a076ad9204f73897459d2b847a517
+    - name: JUPYTERHUB_API_URL
+      value: http://hub:8081/hub/api
+    - name: JUPYTERHUB_BASE_URL
+      value: /
+    - name: JUPYTERHUB_CLIENT_ID
+      value: jupyterhub-user-feri
+    - name: JUPYTERHUB_HOST
+    - name: JUPYTERHUB_OAUTH_ACCESS_SCOPES
+      value: '["access:servers!server=feri/", "access:servers!user=feri"]'
+    - name: JUPYTERHUB_OAUTH_CALLBACK_URL
+      value: /user/feri/oauth_callback
+    - name: JUPYTERHUB_OAUTH_CLIENT_ALLOWED_SCOPES
+      value: '[]'
+    - name: JUPYTERHUB_OAUTH_SCOPES
+      value: '["access:servers!server=feri/", "access:servers!user=feri"]'
+    - name: JUPYTERHUB_SERVER_NAME
+    - name: JUPYTERHUB_SERVICE_PREFIX
+      value: /user/feri/
+    - name: JUPYTERHUB_SERVICE_URL
+      value: http://0.0.0.0:8888/user/feri/
+    - name: JUPYTERHUB_USER
+      value: feri
+    - name: JUPYTER_IMAGE
+      value: jupyter/pyspark-notebook:spark-3.3.1
+    - name: JUPYTER_IMAGE_SPEC
+      value: jupyter/pyspark-notebook:spark-3.3.1
+    - name: MEM_GUARANTEE
+      value: "1073741824"
+    - name: NOTEBOOK_ARGS
+      value: --allow-root
+    image: jupyter/pyspark-notebook:spark-3.3.1
+    imagePullPolicy: IfNotPresent
+    lifecycle: {}
+    name: notebook
+    ports:
+    - containerPort: 8888
+      name: notebook-port
+      protocol: TCP
+    resources:
+      requests:
+        memory: "1073741824"
+    securityContext:
+      allowPrivilegeEscalation: true
+      runAsUser: 0
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /home/jovyan
+      name: volume-feri
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  initContainers:
+  - command:
+    - iptables
+    - -A
+    - OUTPUT
+    - -d
+    - 169.254.169.254
+    - -j
+    - DROP
+    image: jupyterhub/k8s-network-tools:2.0.0
+    imagePullPolicy: IfNotPresent
+    name: block-cloud-metadata
+    resources: {}
+    securityContext:
+      capabilities:
+        add:
+        - NET_ADMIN
+      privileged: true
+      runAsUser: 0
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+  nodeName: vmd38168.contaboserver.net
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: OnFailure
+  schedulerName: jupyter-user-scheduler
+  securityContext:
+    fsGroup: 100
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoSchedule
+    key: hub.jupyter.org/dedicated
+    operator: Equal
+    value: user
+  - effect: NoSchedule
+    key: hub.jupyter.org_dedicated
+    operator: Equal
+    value: user
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: volume-feri
+    persistentVolumeClaim:
+      claimName: claim-feri
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2023-02-26T15:12:38Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2023-02-26T15:13:05Z"
+    message: 'containers with unready status: [notebook]'
+    reason: ContainersNotReady
+    status: "False"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2023-02-26T15:13:05Z"
+    message: 'containers with unready status: [notebook]'
+    reason: ContainersNotReady
+    status: "False"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2023-02-26T15:12:37Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://44b7860508f04a79a7b1b91011972dfde43f97cccff7df8f1e9f127df2fb7f97
+    image: docker.io/jupyter/pyspark-notebook:spark-3.3.1
+    imageID: docker.io/jupyter/pyspark-notebook@sha256:7c60360e8592f4f5b895bfa286c2d914a2fa30d715a51946a7dd1e362d4d6b0e
+    lastState:
+      terminated:
+        containerID: containerd://72fa5b42a3b20d62c469f3ae540ec1f055fe43ccba8034b980ce470234b47d8b
+        exitCode: 1
+        finishedAt: "2023-02-26T15:12:45Z"
+        reason: Error
+        startedAt: "2023-02-26T15:12:42Z"
+    name: notebook
+    ready: false
+    restartCount: 2
+    started: false
+    state:
+      terminated:
+        containerID: containerd://44b7860508f04a79a7b1b91011972dfde43f97cccff7df8f1e9f127df2fb7f97
+        exitCode: 1
+        finishedAt: "2023-02-26T15:13:05Z"
+        reason: Error
+        startedAt: "2023-02-26T15:13:02Z"
+  hostIP: 207.180.253.250
+  initContainerStatuses:
+  - containerID: containerd://7f8dcfc1a2b3bf468ea5d8f17a41e631452cf0434322be403b2479ee8d86d519
+    image: docker.io/jupyterhub/k8s-network-tools:2.0.0
+    imageID: docker.io/jupyterhub/k8s-network-tools@sha256:ab4172a025721495c0c65bd2a6165a6cd625bae39e0e5231c06e149c2ffc5dab
+    lastState: {}
+    name: block-cloud-metadata
+    ready: true
+    restartCount: 0
+    state:
+      terminated:
+        containerID: containerd://7f8dcfc1a2b3bf468ea5d8f17a41e631452cf0434322be403b2479ee8d86d519
+        exitCode: 0
+        finishedAt: "2023-02-26T15:12:37Z"
+        reason: Completed
+        startedAt: "2023-02-26T15:12:37Z"
+  phase: Running
+  podIP: 10.244.0.231
+  podIPs:
+  - ip: 10.244.0.231
+  qosClass: Burstable
+  startTime: "2023-02-26T15:12:37Z"
+  
+  [I 2023-02-26 15:12:40.598 SingleUserLabApp mixins:609] Starting jupyterhub single-user server version 3.1.1
+[I 2023-02-26 15:12:40.598 SingleUserLabApp mixins:623] Extending jupyterlab.labhubapp.SingleUserLabApp from jupyterlab 3.6.1
+[I 2023-02-26 15:12:40.598 SingleUserLabApp mixins:623] Extending jupyter_server.serverapp.ServerApp from jupyter_server 2.3.0
+[W 2023-02-26 15:12:40.611 SingleUserLabApp configurable:200] Config option `open_browser` not recognized by `SingleUserLabApp`.  Did you mean `browser`?
+[I 2023-02-26 15:12:40.620 SingleUserLabApp utils:78] Package jupyter_server_fileid took 0.0033s to import
+[I 2023-02-26 15:12:40.627 SingleUserLabApp utils:78] Package jupyter_server_terminals took 0.0067s to import
+[I 2023-02-26 15:12:40.664 SingleUserLabApp utils:78] Package jupyter_server_ydoc took 0.0361s to import
+[I 2023-02-26 15:12:40.665 SingleUserLabApp utils:78] Package jupyterlab took 0.0000s to import
+[I 2023-02-26 15:12:40.666 SingleUserLabApp utils:78] Package nbclassic took 0.0000s to import
+[W 2023-02-26 15:12:40.668 SingleUserLabApp utils:91] A `_jupyter_server_extension_points` function was not found in nbclassic. Instead, a `_jupyter_server_extension_paths` function was found and will be used for now. This function name will be deprecated in future releases of Jupyter Server.
+[I 2023-02-26 15:12:40.669 SingleUserLabApp utils:78] Package notebook_shim took 0.0001s to import
+[W 2023-02-26 15:12:40.669 SingleUserLabApp utils:91] A `_jupyter_server_extension_points` function was not found in notebook_shim. Instead, a `_jupyter_server_extension_paths` function was found and will be used for now. This function name will be deprecated in future releases of Jupyter Server.
+[W 2023-02-26 15:12:40.677 SingleUserLabApp configurable:200] Config option `open_browser` not recognized by `SingleUserLabApp`.  Did you mean `browser`?
+[W 2023-02-26 15:12:40.678 SingleUserLabApp configurable:200] Config option `open_browser` not recognized by `SingleUserLabApp`.  Did you mean `browser`?
+[I 2023-02-26 15:12:40.679 SingleUserLabApp manager:344] jupyter_server_fileid | extension was successfully linked.
+[W 2023-02-26 15:12:40.685 SingleUserLabApp configurable:200] Config option `open_browser` not recognized by `SingleUserLabApp`.  Did you mean `browser`?
+[W 2023-02-26 15:12:40.686 SingleUserLabApp configurable:200] Config option `open_browser` not recognized by `SingleUserLabApp`.  Did you mean `browser`?
+[I 2023-02-26 15:12:40.686 SingleUserLabApp manager:344] jupyter_server_terminals | extension was successfully linked.
+[W 2023-02-26 15:12:40.692 SingleUserLabApp configurable:200] Config option `open_browser` not recognized by `SingleUserLabApp`.  Did you mean `browser`?
+[W 2023-02-26 15:12:40.693 SingleUserLabApp configurable:200] Config option `open_browser` not recognized by `SingleUserLabApp`.  Did you mean `browser`?
+[I 2023-02-26 15:12:40.693 SingleUserLabApp manager:344] jupyter_server_ydoc | extension was successfully linked.
+[W 2023-02-26 15:12:40.703 SingleUserLabApp configurable:200] Config option `open_browser` not recognized by `SingleUserLabApp`.  Did you mean `browser`?
+[I 2023-02-26 15:12:40.704 SingleUserLabApp manager:344] jupyterlab | extension was successfully linked.
+[W 2023-02-26 15:12:40.706 NotebookApp] 'ip' has moved from NotebookApp to ServerApp. This config will be passed to ServerApp. Be sure to update your config before our next release.
+[W 2023-02-26 15:12:40.707 NotebookApp] 'ip' has moved from NotebookApp to ServerApp. This config will be passed to ServerApp. Be sure to update your config before our next release.
+[W 2023-02-26 15:12:40.711 SingleUserLabApp configurable:200] Config option `open_browser` not recognized by `SingleUserLabApp`.  Did you mean `browser`?
+[I 2023-02-26 15:12:40.711 SingleUserLabApp manager:344] nbclassic | extension was successfully linked.
+[I 2023-02-26 15:12:40.995 SingleUserLabApp manager:344] notebook_shim | extension was successfully linked.
+[W 2023-02-26 15:12:41.136 SingleUserLabApp serverapp:1897] Customizing authentication via ServerApp.login_handler_class=<class 'jupyterhub.singleuser.mixins.make_singleuser_app.<locals>.JupyterHubLoginHandler'> is deprecated in Jupyter Server 2.0. Use ServerApp.identity_provider_class. Falling back on legacy authentication.
+[I 2023-02-26 15:12:41.158 SingleUserLabApp manager:364] notebook_shim | extension was successfully loaded.
+[I 2023-02-26 15:12:41.159 FileIdExtension] Configured File ID manager: ArbitraryFileIdManager
+[I 2023-02-26 15:12:41.159 FileIdExtension] ArbitraryFileIdManager : Configured root dir: /home/jovyan
+[I 2023-02-26 15:12:41.159 FileIdExtension] ArbitraryFileIdManager : Configured database path: /home/jovyan/.local/share/jupyter/file_id_manager.db
+[I 2023-02-26 15:12:41.159 FileIdExtension] ArbitraryFileIdManager : Successfully connected to database file.
+[I 2023-02-26 15:12:41.159 FileIdExtension] ArbitraryFileIdManager : Creating File ID tables and indices.
+[I 2023-02-26 15:12:41.160 FileIdExtension] Attached event listeners.
+[I 2023-02-26 15:12:41.160 SingleUserLabApp manager:364] jupyter_server_fileid | extension was successfully loaded.
+[I 2023-02-26 15:12:41.162 SingleUserLabApp manager:364] jupyter_server_terminals | extension was successfully loaded.
+[I 2023-02-26 15:12:41.163 SingleUserLabApp manager:364] jupyter_server_ydoc | extension was successfully loaded.
+[I 2023-02-26 15:12:41.163 LabApp] JupyterLab extension loaded from /opt/conda/lib/python3.10/site-packages/jupyterlab
+[I 2023-02-26 15:12:41.163 LabApp] JupyterLab application directory is /opt/conda/share/jupyter/lab
+[I 2023-02-26 15:12:41.168 SingleUserLabApp manager:364] jupyterlab | extension was successfully loaded.
+[I 2023-02-26 15:12:41.173 SingleUserLabApp manager:364] nbclassic | extension was successfully loaded.
+[I 2023-02-26 15:12:41.174 SingleUserLabApp mixins:670] Starting jupyterhub-singleuser server version 3.1.1
+[W 2023-02-26 15:12:41.181 SingleUserLabApp _version:68] jupyterhub version 3.0.0 != jupyterhub-singleuser version 3.1.1. This could cause failure to authenticate and result in redirect loops!
+[C 2023-02-26 15:12:41.181 SingleUserLabApp serverapp:2785] Running as root is not recommended. Use --allow-root to bypass.
+
+  

@@ -16,3 +16,8 @@ kubectl apply -f jupyter-vs.yaml
 # kubectl delete -f jupyter-vs.yaml
 # helm uninstall -n spark jupyter
  
+ 
+# helm upgrade --install jupyter jupyterhub/jupyterhub --values values.yaml  --namespace jupyter --create-namespace
+# helm uninstall -n jupyter jupyter
+
+ 
