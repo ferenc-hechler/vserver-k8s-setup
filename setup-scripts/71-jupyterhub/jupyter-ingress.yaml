@@ -1,26 +1,26 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: spark-ingress
+  name: jupyter-ingress
   namespace: spark
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production  
   labels:
-    app: spark
+    app: jupyter
 spec:
   ingressClassName: nginx
   tls:
-    - secretName: spark-ssl
+    - secretName: jupyter-ssl
       hosts:
-      - spark.vps4.cluster-1.de
+      - jupyter.vps4.cluster-1.de
   rules:
-  - host: "spark.vps4.cluster-1.de"
+  - host: "jupyter.vps4.cluster-1.de"
     http:
       paths:
         - pathType: Prefix
           path: "/"
           backend:
             service:
-              name: bit-spark-master-svc
+              name: proxy-public
               port:
                 number: 80
