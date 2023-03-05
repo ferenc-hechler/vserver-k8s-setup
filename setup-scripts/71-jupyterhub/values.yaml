@@ -12,7 +12,8 @@ singleuser:
     tag: "spark-3.3.2"
   # https://z2jh.jupyter.org/en/latest/resources/reference.html#singleuser-allowprivilegeescalation
   allowPrivilegeEscalation: yes
-
+  memory:
+    guarantee: 4G
     
 hub:
   config:
