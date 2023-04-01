@@ -21,6 +21,6 @@ spec:
           path: "/"
           backend:
             service:
-              name: hedgedoc-service
+              name: hedgedoc
               port:
                 number: 80
