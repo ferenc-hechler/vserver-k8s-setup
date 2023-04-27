@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+<script>
+    function setMessage(text) {
+      document.getElementById('message').textContent = text;
+    }
+</script>
+
+<style>
+  .top-level {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    margin-top: 10px;
+    width: 200px;
+    height: 50px;
+    background-color: white;
+    border-radius: 5px;
+    font-family: sans-serif;
+    font-weight: bold;
+    padding: 5px;
+    line-height: 25px;
+    text-align: center;
+    font-size: large;
+  }
+</style>
+
+<body style="margin : 0px; overflow: hidden;">
+  <a-scene arjs>
+    <a-marker id="marker1" type="pattern" size="0.1" emitevents="true" url="./telekom-marker-gray.patt">
+      <a-entity position="1.15 0 -2" scale="0.05 0.05 0.05" gltf-model="assets/cable.gltf" animation-mixer
+        animation="property: rotation; to: 0 0 -360; loop: true; dur: 1000; easing: linear"
+        animation__2="property: position; to: 1.15 0 -1.5; loop: true; dur: 1000; dir: alternate"></a-entity>
+    </a-marker>
+    <a-marker id="marker2" type="pattern" size="0.1" emitevents="true" url="./telekom-marker-negative.patt">
+      <a-entity position="0 0 -2" scale="0.05 0.05 0.05" gltf-model="assets/arrow.gltf" animation-mixer
+        animation="property: rotation; to: 0 0 -360; loop: true; dur: 1000; easing: linear"
+        animation__2="property: position; to: 0 0 -1.5; loop: true; dur: 1000; dir: alternate"></a-entity>
+    </a-marker>
+    <a-entity camera></a-entity>
+  </a-scene>
+  <div class="top-level">
+	<p id="message">Tilt the router to the bottom</p>
+	 <button onClick="setMessage('button clicked')">Click me!</button> 
+  </div>
+</body>
+<script>
+    function init() {
+      setMessage('INIT called');
+	  anchorRef = document.getElementById('marker1')
+	  anchorRef.addEventListener("markerFound", (e)=>{ 
+			setMessage("MARKER1 FOUND!")
+		})
+	  anchorRef = document.getElementById('marker2')
+	  anchorRef.addEventListener("markerFound", (e)=>{ 
+			setMessage("MARKER2 FOUND!")
+		})
+    }
+
+	init()
+</script>
+
+</html>
