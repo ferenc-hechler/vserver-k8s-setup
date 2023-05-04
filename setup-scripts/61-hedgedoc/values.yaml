@@ -217,8 +217,10 @@ hedgedoc:
   ## setting about note permission
   ##
   notePermission:
-    allowAnonymousEdit: true
-    allowAnonymousView: true
+    #allowAnonymousEdit: true
+    allowAnonymousEdit: false
+    #allowAnonymousView: true
+    allowAnonymousView: false
   ##
   ## allow export note to pdf
   ##
@@ -240,7 +242,7 @@ hedgedoc:
     ## authentication by Email and Password
     local:
       enabled: true
-      allowRegister: true
+      allowRegister: false
     bitbucket:
       enabled: false
       key:

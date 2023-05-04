@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wordpress-ingress
+  namespace: wordpress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production  
+  labels:
+    app: wordpress
+spec:
+  ingressClassName: wordpress
+  tls:
+    - secretName: wordpress-ssl
+      hosts:
+      - wordpress.k8s.feri.ai          
+  rules:
+  - host: "wordpress.k8s.feri.ai"
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: wordpress-service
+              port:
+                number: 80
+
