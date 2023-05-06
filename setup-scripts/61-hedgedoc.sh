@@ -17,6 +17,8 @@ helm repo add schmitzis https://schmitzis.github.io/helm-charts/
 helm repo update
 helm upgrade --install hedgedoc schmitzis/hedgedoc --namespace hedgedoc --create-namespace --values values.yaml
 # helm template schmitzis/hedgedoc --namespace hedgedoc --create-namespace --values values.yaml
+# create sql dump
+# kubectl exec -it -n hedgedoc hedgedoc-postgresql-0 -- sh -c "PGPASSWORD=\"$POSTGRES_PASSWORD\" bash -c 'pg_dump -U codimd'" > hedgedoc-codimd-dump.sql
 
 kubectl apply -f 61-hedgedoc/hedgedoc-ingress.yaml
 
