@@ -6,7 +6,7 @@ metadata:
   labels:
     app: hedgedoc-backup
 spec:
-  schedule: "44 2 * * *"
+  schedule: "05 2 * * *"
   jobTemplate:
     spec:
       template:
