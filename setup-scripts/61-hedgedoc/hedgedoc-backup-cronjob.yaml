@@ -1,0 +1,85 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hedgedoc-backup-cronjob
+  namespace: hedgedoc
+  labels:
+    app: hedgedoc-backup
+spec:
+  schedule: "44 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hedgedoc-backup
+            image: feridock/pgpcloudbackup:0.1
+            command: [ "/bin/sh", "-c", "--" ]
+            args: [ "echo starting hedgedoc-backup;
+            set -x;
+            date;
+            rm -rf /backup/hedgedoc-database-*.tgz;
+            rm -rf /backup/hedgedoc-imageuploads-*.tgz;
+            date;
+            export TODAY=$(date -I);
+            cd /hedgedoc-database;
+            tar czf /backup/hedgedoc-database-$TODAY.tgz *;
+            cd /hedgedoc-imageuploads;
+            tar czf /backup/hedgedoc-imageuploads-$TODAY.tgz *;
+            cd /backup;
+            date;
+            /app/pgp-cloud-backup.sh;
+            date;
+            /app/pgp-cloud-housekeeping.sh;
+            date;
+            echo finished hedgedoc-backup"]
+            imagePullPolicy: IfNotPresent
+            #imagePullPolicy: Always
+            env:
+            - name: PGPCB_CONFIG_FILE
+              value: "/app/conf/.pcloud-config"
+            - name: PGPCB_PUBLIC_PGP_KEY_FILE
+              value: "/app/conf/encrypt-key.pub"
+            - name: PGPCB_LOCAL_FOLDER
+              value: "/backup"
+            - name: PGPCB_TEMP_FOLDER
+              value: "/tmp"
+            - name: PGPCB_REMOTE_FOLDER
+              value: "/VSERVERBACKUP/hedgedoc"
+            - name: PGPCB_DELETE_REMOTE
+              value: "false"
+            - name: PGPCB_KEEP_PERIODS
+              value: "7d4w3m*y"
+            - name: PGPCB_IGNORE_MISSING_TIMESTAMPS
+              value: "false"
+            volumeMounts:
+            - mountPath: /backup
+              name: backup
+            - name: config
+              mountPath: "/app/conf"
+              readOnly: true
+            - mountPath: /hedgedoc-database
+              name: hedgedoc-database
+              readOnly: true
+            - mountPath: /hedgedoc-imageuploads
+              name: hedgedoc-imageuploads
+              readOnly: true
+            - mountPath: /tmp
+              name: tmp
+          volumes:
+          - name: backup
+            persistentVolumeClaim:
+              claimName: hedgedoc-backup-pvc
+          - name: config
+            secret:
+              secretName: hedgedoc-backup-secret
+          - name: hedgedoc-database
+            persistentVolumeClaim:
+              claimName: data-hedgedoc-postgresql-0
+          - name: hedgedoc-imageuploads
+            persistentVolumeClaim:
+              claimName: hedgedoc
+          - name: tmp
+            emptyDir: {}           
+          restartPolicy: Never
+      backoffLimit: 3

@@ -16,7 +16,7 @@ helm upgrade --install hedgedoc-postgresql bitnami/postgresql --namespace hedged
 helm repo add schmitzis https://schmitzis.github.io/helm-charts/
 helm repo update
 helm upgrade --install hedgedoc schmitzis/hedgedoc --namespace hedgedoc --create-namespace --values values.yaml
-
+# helm template schmitzis/hedgedoc --namespace hedgedoc --create-namespace --values values.yaml
 
 kubectl apply -f 61-hedgedoc/hedgedoc-ingress.yaml
 
