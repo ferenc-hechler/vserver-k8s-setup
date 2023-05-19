@@ -42,6 +42,11 @@
         animation="property: rotation; to: 0 0 -360; loop: true; dur: 1000; easing: linear"
         animation__2="property: position; to: 0 0 -1.5; loop: true; dur: 1000; dir: alternate"></a-entity>
     </a-marker>
+    <a-marker id="marker3" type="pattern" size="0.1" emitevents="true" url="./pattern-blacksquare.patt">
+      <a-entity position="0 0 -2" scale="0.05 0.05 0.05" gltf-model="assets/arrow.gltf" animation-mixer
+        animation="property: rotation; to: 0 0 -360; loop: true; dur: 1000; easing: linear"
+        animation__2="property: position; to: 0 0 -1.5; loop: true; dur: 1000; dir: alternate"></a-entity>
+    </a-marker>
     <a-entity camera></a-entity>
   </a-scene>
   <div class="top-level">
@@ -55,11 +60,23 @@
 	  anchorRef = document.getElementById('marker1')
 	  anchorRef.addEventListener("markerFound", (e)=>{ 
 			setMessage("MARKER1 FOUND!")
-		})
+	  })
 	  anchorRef = document.getElementById('marker2')
 	  anchorRef.addEventListener("markerFound", (e)=>{ 
 			setMessage("MARKER2 FOUND!")
-		})
+	  })
+	  anchorRef = document.getElementById('marker3')
+	  anchorRef.addEventListener("markerFound", (e)=>{ 
+		setMessage("x:"+Math.round(100*e.currentTarget.object3D.position.x)+",y:"+Math.round(100*e.currentTarget.object3D.position.y)+",z:"+Math.round(100*e.currentTarget.object3D.position.z))
+		const interval = setInterval(function() {
+			ar3=document.getElementById('marker3')
+			setMessage("x:"+Math.round(100*ar3.object3D.position.x)+",y:"+Math.round(100*ar3.object3D.position.y)+",z:"+Math.round(100*ar3.object3D.position.z))
+	 		}, 1000);
+	  })
+	  anchorRef.addEventListener("markerLost", (e)=>{ 
+		setMessage("lost Marker3")
+		clearInterval(interval)
+	  })
     }
 
 	init()
