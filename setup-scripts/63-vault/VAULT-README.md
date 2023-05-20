@@ -63,6 +63,7 @@ kubectl apply -f vault-ing.yaml
 Download vault binary from [here](https://releases.hashicorp.com/vault/1.13.2/)
 
 ```
+# set VAULT_ADDR=https://vault.k8s.feri.ai
 export VAULT_ADDR=https://vault.k8s.feri.ai
 
 $ vault login -method=userpass username=webapp
