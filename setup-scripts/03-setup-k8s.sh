@@ -8,6 +8,17 @@ K8S_VERSION=1.25.0
 KUBEADM_VERSION=1.25.5-00
 CRITOOLS_VERSION=1.25.0-00
 
+
+# https://kind.sigs.k8s.io/docs/user/known-issues/
+# increase number of watchers (kubectl logs .. -f)
+# original values:
+# fs.inotify.max_user_instances = 128
+# fs.inotify.max_user_watches = 234227
+sudo sysctl fs.inotify.max_user_watches=524288
+sudo sysctl fs.inotify.max_user_instances=512
+echo fs.inotify.max_user_watches = 524288 | sudo tee -a /etc/sysctl.conf > /dev/null
+echo fs.inotify.max_user_instances = 512 | sudo tee -a /etc/sysctl.conf > /dev/null
+
 cd ~
 
 # Install general dependencies
