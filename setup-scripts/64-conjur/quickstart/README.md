@@ -97,5 +97,10 @@ echo $VAR_VALUE
   17ec2d4f48d96b0cb4df3c5f
 ```
 
+# Interactive Tutorial Kubernetea
+
+* https://www.conjur.org/get-started/interactive/
+* https://www.conjur.org/get-started/interactive/secure-kubernetes-secrets/
+
 
 
