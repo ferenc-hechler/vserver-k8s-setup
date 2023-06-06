@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: conjur-ingress
+  namespace: conjur
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production  
+  labels:
+    app: conjur
+spec:
+  ingressClassName: nginx
+  tls:
+    - secretName: conjur-ssl
+      hosts:
+      - conjur.k8s.feri.ai          
+  rules:
+  - host: "conjur.k8s.feri.ai"
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: conjur
+              port:
+                number: 8200
+
