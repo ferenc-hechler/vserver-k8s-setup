@@ -21,7 +21,7 @@ spec:
           path: "/"
           backend:
             service:
-              name: conjur
+              name: conjur-service
               port:
-                number: 8200
+                number: 80
 

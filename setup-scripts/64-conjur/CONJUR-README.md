@@ -10,7 +10,7 @@ kubectl create namespace "$CONJUR_NAMESPACE"
 DATA_KEY="$(docker run --rm cyberark/conjur data-key generate)"
 HELM_RELEASE=conjur
 VERSION=2.0.6
-helm install -n "$CONJUR_NAMESPACE" --values values.yaml --set dataKey="$DATA_KEY" "$HELM_RELEASE" https://github.com/cyberark/conjur-oss-helm-chart/releases/download/v$VERSION/conjur-oss-$VERSION.tgz
+helm upgrade --install -n "$CONJUR_NAMESPACE" --values values.yaml --set dataKey="$DATA_KEY" "$HELM_RELEASE" https://github.com/cyberark/conjur-oss-helm-chart/releases/download/v$VERSION/conjur-oss-$VERSION.tgz
 ```
 
 output:
@@ -98,4 +98,11 @@ NOTES:
 4. Next Steps
   - Go through the Conjur Tutorials: https://www.conjur.org/tutorials/
   - View Conjur's API Documentation: https://www.conjur.org/api.html
+```
+
+## install ingress
+
+```
+kubectl apply -f conjur-service.yaml
+kubectl apply -f conjur-ing.yaml
 ```
