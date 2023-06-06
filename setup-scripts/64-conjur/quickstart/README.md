@@ -103,4 +103,10 @@ echo $VAR_VALUE
 * https://www.conjur.org/get-started/interactive/secure-kubernetes-secrets/
 
 
+# API
+
+* REST: https://docs.conjur.org/Latest/en/Content/Developer/lp_REST_API.htm
+* GO: https://github.com/cyberark/conjur-api-go
+
+
 
