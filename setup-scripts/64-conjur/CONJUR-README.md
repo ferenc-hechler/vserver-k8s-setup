@@ -22,8 +22,9 @@ NAMESPACE: conjur
 STATUS: deployed
 REVISION: 1
 NOTES:
+
 1. Get the application URLs. These should match the configured SSL values:
-  - https://conjur.myorg.com
+  - https://conjur.k8s.feri.ai
 
   It may take 1-10 minutes for the LoadBalancer IP to be available. You can watch
   the status of the progress by running:
@@ -106,3 +107,66 @@ NOTES:
 kubectl apply -f conjur-service.yaml
 kubectl apply -f conjur-ing.yaml
 ```
+
+
+## create an initial account 
+
+* https://www.conjur.org/get-started/install-conjur.html#install-and-configure
+  
+```
+kubectl exec -it -c conjur-oss conjur-conjur-oss-755997cdf7-72k5q -- /bin/bash
+```
+
+in container:
+
+```
+conjurctl account create "default"
+
+Created new account 'default'
+Token-Signing Public Key: -----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAm+CwkxQY5zuxBsFXM/dS
+................................................................
+GQIDAQAB
+-----END PUBLIC KEY-----
+API key for admin: 3eqa.....1j41
+```
+
+
+```
+sudo docker run --rm -it --entrypoint /bin/sh cyberark/conjur-cli:8
+```
+
+in docker container:
+
+```
+conjur init -u https://conjur.k8s.feri.ai -a "default"       # --self-signed
+
+  Warning: Using self-signed certificates is not recommended and could lead to exposure of sensitive data
+
+  The server's certificate fingerprint is 02:35:28:04:C8:DC:AC:9A:99:30:94:EF:81:88:35:FB:EC:07:D8:96.
+  Please verify this certificate on the appliance using command:
+  openssl x509 -fingerprint -noout -in ~conjur/etc/ssl/conjur.pem
+
+  ? Trust this certificate? Yes
+  Wrote certificate to /root/conjur-server.pem
+  Wrote configuration to /root/.conjurrc
+
+conjur login -i admin -p 3eqa........1j41
+  Logged in
+
+conjur whoami
+
+  {
+    "client_ip": "10.244.0.225",
+    "user_agent": "Go-http-client/1.1",
+    "account": "default",
+    "username": "admin",
+    "token_issued_at": "2023-06-06T19:06:35.000+00:00"
+  }
+```
+
+# Download Conjur CLI Windows 
+
+* https://github.com/cyberark/cyberark-conjur-cli/releases
+* https://github.com/cyberark/cyberark-conjur-cli/releases/download/v7.1.0/conjur-cli-windows.zip
+
