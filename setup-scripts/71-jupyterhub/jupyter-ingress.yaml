@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: jupyter-ssl
       hosts:
-      - jupyter.vps4.cluster-1.de
+      - jupyter.k8s.feri.ai
   rules:
-  - host: "jupyter.vps4.cluster-1.de"
+  - host: "jupyter.k8s.feri.ai"
     http:
       paths:
         - pathType: Prefix

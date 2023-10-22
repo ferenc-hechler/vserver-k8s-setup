@@ -20,6 +20,8 @@ hub:
     Authenticator:
       admin_users:
         - feri
+        - alex
+        - patrick
       #allowed_users:
       #  - user3
       #  - user4

@@ -9,7 +9,8 @@ helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 helm repo update
 helm upgrade --install jupyter jupyterhub/jupyterhub --values values.yaml  --namespace spark --create-namespace
 
-kubectl apply -f jupyter-vs.yaml
+#kubectl apply -f jupyter-vs.yaml
+kubectl apply -f jupyter-ingress.yaml
 
 # helm upgrade --install jupyter --values values.yaml  jupyterhub/jupyterhub --namespace spark
 
