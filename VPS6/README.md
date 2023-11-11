@@ -20,7 +20,10 @@ https://linuxhint.com/install-php-8-ubuntu-22-04/
 
 ```
 sudo apt install lsb-release ca-certificates apt-transport-https software-properties-common -y
-sudo add-apt-repository ppa:ondrej/php^
+sudo add-apt-repository ppa:ondrej/php
+```
+
+```
 sudo apt install php8.0
 ```
 
@@ -43,7 +46,7 @@ sudo apt install libapache2-mod-php8.0 php8.0-{zip,xml,mbstring,gd,curl,imagick,
 
 ### config
 
-vi /etc/php/8.0/apache2/php.ini 
+sudo vi /etc/php/8.0/apache2/php.ini 
 
 ```
 ;memory_limit = 128M
@@ -107,6 +110,9 @@ sudo systemctl restart apache2
 
 ## STEP 6 (optional) create data folder
 
+```
+sudo mkdir /home/data
+```
 
 ## STEP 7
 
@@ -125,3 +131,78 @@ sudo certbot --apache
 
 a certbot dialog follows
 
+
+# Backup
+
+https://docs.nextcloud.com/server/latest/admin_manual/maintenance/backup.html
+
+```
+DB_PASSWORD=...
+
+NOW=$(date +"%Y-%m-%d")
+
+DB_SERVER=localhost
+DB_NAME=nextcloud
+DB_USER=nextcloud
+mkdir -p /tmp/BAK/nextcloud-$NOW
+mysqldump --single-transaction --default-character-set=utf8mb4 -h "$DB_SERVER" -u "$DB_USER" -p$DB_PASSWORD "$DB_NAME" > /tmp/BAK/nextcloud-`date +"%Y-%m-%d"`/nextcloud-sqldump.sql
+```
+
+```
+cd /var/www/nextcloud
+sudo sudo -u www-data php occ maintenance:mode --on
+
+  Maintenance mode enabled
+```
+
+```
+sudo tar cvzf /tmp/BAK/nextcloud-`date +"%Y-%m-%d"`/nextcloud-config-`date +"%Y-%m-%d"`.tgz -C /var/www/nextcloud config
+sudo tar cvzf /tmp/BAK/nextcloud-`date +"%Y-%m-%d"`/nextcloud-themes-`date +"%Y-%m-%d"`.tgz -C /var/www/nextcloud themes
+sudo tar cvzf /tmp/BAK/nextcloud-`date +"%Y-%m-%d"`/nextcloud-data-`date +"%Y-%m-%d"`.tgz -C /home data
+```
+
+### create one upload-file for backup
+
+```
+tar cvzf /tmp/BAK/nextcloud-$NOW.tgz -C /tmp/BAK nextcloud-$NOW 
+rm -rf /tmp/BAK/nextcloud-$NOW
+```
+
+## restore
+
+https://docs.nextcloud.com/server/latest/admin_manual/maintenance/restore.html
+
+```
+DB_PASSWORD=...
+DB_SERVER=localhost
+DB_NAME=nextcloud
+DB_USER=nextcloud
+mysql -h "$DB_SERVER" -u "$DB_USER" -p$DB_PASSWORD -e "DROP DATABASE $DB_NAME"
+mysql -h "$DB_SERVER" -u "$DB_USER" -p$DB_PASSWORD -e "CREATE DATABASE $DB_NAME"
+
+mysql -h "$DB_SERVER" -u "$DB_USER" -p$DB_PASSWORD "$DB_NAME" < uploads/nextcloud-2023-11-11/nextcloud-sqldump.sql
+
+sudo rm -rf /var/www/nextcloud/config/
+sudo rm -rf /var/www/nextcloud/themes/
+sudo rm -rf /home/data/
+
+sudo tar xvzf ~/uploads/nextcloud-2023-11-11/nextcloud-config-2023-11-11.tgz -C /var/www/nextcloud
+sudo tar xvzf ~/uploads/nextcloud-2023-11-11/nextcloud-themes-2023-11-11.tgz -C /var/www/nextcloud
+sudo tar xvzf ~/uploads/nextcloud-2023-11-11/nextcloud-data-2023-11-11.tgz -C /home
+```
+
+## Switch off maintenance mode
+
+```
+cd /var/www/nextcloud
+sudo sudo -u www-data php occ maintenance:mode --off
+
+  Maintenance mode disabled
+```
+
+
+# Push Backups
+
+```
+sudo apt install openjdk-17-jre-headless
+```
