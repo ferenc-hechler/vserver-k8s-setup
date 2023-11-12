@@ -108,6 +108,9 @@ sudo a2ensite nextcloud.conf
 sudo systemctl restart apache2
 ```
 
+to disable site use `a2dissite`
+
+
 ## STEP 6 (optional) create data folder
 
 ```
@@ -131,13 +134,34 @@ sudo certbot --apache
 
 a certbot dialog follows
 
+# remove templates
+
+
+```
+mkdir -p /tmp/empty
+chown www-data:www-data /tmp/empty
+```
+
+```
+sudo vi /var/www/nextcloud/config/config.php
+```
+
+```
+    $CONFIG = array (
+      ...
+      'maintenance' => false,
+[+]   'skeletondirectory' => '/tmp/empty',
+    );
+```
+
 
 # Backup
 
 https://docs.nextcloud.com/server/latest/admin_manual/maintenance/backup.html
 
 ```
-DB_PASSWORD=...
+sudo sh -c "echo -n \"...\" > /root/.dbpw"
+DB_PASSWORD=$(sudo cat /root/.dbpw)
 
 NOW=$(date +"%Y-%m-%d")
 
