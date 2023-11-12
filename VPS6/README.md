@@ -230,3 +230,9 @@ sudo sudo -u www-data php occ maintenance:mode --off
 ```
 sudo apt install openjdk-17-jre-headless
 ```
+
+# Fehlerbehebung
+
+## Datei lässt sich in GUI nicht löschen
+
+https://help.nextcloud.com/t/dateien-lassen-sich-nicht-loschen/5589/10
