@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
       - name: minecraft
-        image: "itzg/minecraft-server:java8-multiarch"
+        #image: "itzg/minecraft-server:java8-multiarch"
+        image: "itzg/minecraft-server:2024.3.0-java8-multiarch"
         env:
         - name: EULA
           value: "TRUE"
@@ -30,7 +31,8 @@ spec:
         - name: MAX_MEMORY
           value: "4G"
         - name: MODPACK
-          value: "https://filedn.eu/lwAjS7B5boTSPWN01fknj4b/mc-mods/mods.zip"
+          #value: "https://filedn.eu/lwAjS7B5boTSPWN01fknj4b/mc-mods/mods.zip"
+          value: "http://patrick.hechler.de/Downloads/mods.zip"
         - name: REMOVE_OLD_MODS
           value: "TRUE"
         #- name: OPS
@@ -58,7 +60,7 @@ spec:
         - name: SERVER_NAME
           value: "PatMCS"
         - name: MOTD
-          value: "The new PatMCS Server v1.12 with 26 mods"
+          value: "The new PatMCS Server v1.12 with 47 mods"
         volumeMounts:
         - mountPath: /data
           name: data          
