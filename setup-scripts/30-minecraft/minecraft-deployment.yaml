@@ -27,14 +27,20 @@ spec:
         - name: VERSION
           value: "1.12.2"
         - name: FORGE_VERSION
-          value: "14.23.5.2855"
+          value: "14.23.5.2860"
         - name: MAX_MEMORY
-          value: "4G"
+          value: "8G"
         - name: MODPACK
           #value: "https://filedn.eu/lwAjS7B5boTSPWN01fknj4b/mc-mods/mods.zip"
           value: "http://patrick.hechler.de/Downloads/mods.zip"
         - name: REMOVE_OLD_MODS
           value: "TRUE"
+        - name: GENERIC_PACKS_PREFIX
+          value: "http://patrick.hechler.de/Downloads/"
+        - name: GENERIC_PACKS_SUFFIX
+          value: ".zip"
+        - name: GENERIC_PACKS
+          value: "config"
         #- name: OPS
         #  value: "patricklas,5ba3d1d5-92bd-3530-a98b-63fb3670230d,a86900d5-eed3-48d3-9162-00fdf0cec5f9"
         - name: OPS_FILE
