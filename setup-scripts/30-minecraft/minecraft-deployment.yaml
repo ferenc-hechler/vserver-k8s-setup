@@ -40,6 +40,7 @@ spec:
         - name: GENERIC_PACKS_SUFFIX
           value: ".zip"
         - name: GENERIC_PACKS
+        #  value: "icon,config"
           value: "config"
         #- name: OPS
         #  value: "patricklas,5ba3d1d5-92bd-3530-a98b-63fb3670230d,a86900d5-eed3-48d3-9162-00fdf0cec5f9"
@@ -51,6 +52,8 @@ spec:
           value: "false"
         - name: ALLOW_FLIGHT
           value: "TRUE"
+        - name: ENABLE_COMMAND_BLOCK
+          value: "false"
         - name: ONLINE_MODE
           value: "FALSE"
         - name: ENABLE_ROLLING_LOGS
@@ -62,11 +65,14 @@ spec:
         - name: MAX_TICK_TIME
           value: "-1"
         - name: ICON
-          value: "https://static.wikia.nocookie.net/pure-evil-wiki/images/b/b7/EmperorVitiate.png/revision/latest"
+          #value: "https://static.wikia.nocookie.net/pure-evil-wiki/images/b/b7/EmperorVitiate.png/revision/latest"
+          value: "http://patrick.hechler.de/Downloads/server-icon.png"
+        - name: OVERRIDE_ICON
+          value: "TRUE"
         - name: SERVER_NAME
           value: "PatMCS"
         - name: MOTD
-          value: "The new PatMCS Server v1.12 with 47 mods"
+          value: "PatMCS Server v1.12 with 50 mods, you should have even more"
         volumeMounts:
         - mountPath: /data
           name: data          
