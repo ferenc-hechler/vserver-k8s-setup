@@ -64,6 +64,8 @@ spec:
           value: "TRUE"
         - name: MAX_TICK_TIME
           value: "-1"
+        - name: MAX_PLAYERS
+          value: "8"
         - name: ICON
           #value: "https://static.wikia.nocookie.net/pure-evil-wiki/images/b/b7/EmperorVitiate.png/revision/latest"
           value: "http://patrick.hechler.de/Downloads/server-icon.png"
