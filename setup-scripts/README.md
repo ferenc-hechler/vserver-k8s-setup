@@ -11,7 +11,7 @@ Important: the script contains my public SSH key to allow login with ssh. You sh
 replace the value in `echo "ssh-ed25519 AAAAC3Nza...` with your public key.
 
 ```
-curl -O https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/main/setup-scripts/01-create-user.sh
+curl -O https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/vps2/setup-scripts/01-create-user.sh
 source 01-create-user.sh ferenc
    <enter hidden password>
 
