@@ -1,0 +1,6 @@
+apiVersion: v2
+name: c2gateway
+description: Gateway for *.k8s.<domainLabel1>.de
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

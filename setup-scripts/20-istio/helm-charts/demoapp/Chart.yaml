@@ -1,0 +1,9 @@
+apiVersion: v2
+Name: demoapp
+description: hello world demo webapp
+
+type: application
+
+Version: 0.1.0
+
+AppVersion: "0.1.0"

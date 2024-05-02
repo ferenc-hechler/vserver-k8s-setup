@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pvcapp
+spec:
+  selector:
+    matchLabels:
+      app: pvcapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pvcapp
+    spec:
+      containers:
+      - name: pvcapp
+        image: "gcr.io/google-samples/hello-app:2.0"
+        volumeMounts:
+        - name: data
+          mountPath: /data       
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: pvcapp-data-pvc

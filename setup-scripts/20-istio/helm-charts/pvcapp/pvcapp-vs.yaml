@@ -1,0 +1,20 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: pvcapp-vs
+  labels:
+    app: pvcapp
+spec:
+  gateways:
+  - istio-ingress/k8s-gateway
+  hosts:
+  - 'pvcapp.k8s.{{ .Values.domainLabel1 }}.de'
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: pvcapp-service.{{ .Release.Namespace }}.svc.cluster.local
+        port:
+          number: 80

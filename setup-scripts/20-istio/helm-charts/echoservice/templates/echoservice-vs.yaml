@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: echoservice-vs
+  labels:
+    app: echoservice
+spec:
+  gateways:
+  - istio-ingress/k8s-gateway
+  hosts:
+  - 'echoservice.k8s.{{ .Values.domainLabel1 }}.de'
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: echoservice.{{ .Release.Namespace }}.svc.cluster.local
+        port:
+          number: 80
+    appendHeaders:
+        "x-forwarded-proto": "https"
