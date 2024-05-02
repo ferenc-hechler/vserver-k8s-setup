@@ -28,7 +28,7 @@ sudo apt-get install -y apt-transport-https ca-certificates curl
 
 # Install containerd
 ## config
-curl -fsSLo containerd-config.toml https://gist.githubusercontent.com/oradwell/31ef858de3ca43addef68ff971f459c2/raw/5099df007eb717a11825c3890a0517892fa12dbf/containerd-config.toml
+curl -fsSLo containerd-config.toml https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/vps2/setup-scripts/03-containerd/containerd-config.toml
 sudo mkdir -p /etc/containerd
 sudo mv containerd-config.toml /etc/containerd/config.toml
 
