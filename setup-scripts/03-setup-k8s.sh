@@ -4,9 +4,9 @@
 
 set -xev
 
-K8S_VERSION=1.25.0
-KUBEADM_VERSION=1.25.5-00
-CRITOOLS_VERSION=1.25.0-00
+K8S_VERSION=1.29.4
+KUBEADM_VERSION=1.29.4-00
+CRITOOLS_VERSION=1.29.4-00
 
 
 # https://kind.sigs.k8s.io/docs/user/known-issues/
@@ -32,9 +32,9 @@ curl -fsSLo containerd-config.toml https://gist.githubusercontent.com/oradwell/3
 sudo mkdir -p /etc/containerd
 sudo mv containerd-config.toml /etc/containerd/config.toml
 
-curl -fsSLo containerd-1.6.14-linux-amd64.tar.gz https://github.com/containerd/containerd/releases/download/v1.6.14/containerd-1.6.14-linux-amd64.tar.gz
+curl -fsSLo containerd-1.7.16-linux-amd64.tar.gz https://github.com/containerd/containerd/releases/download/v1.7.16/containerd-1.7.16-linux-amd64.tar.gz
 ## Extract the binaries
-sudo tar Cxzvf /usr/local containerd-1.6.14-linux-amd64.tar.gz
+sudo tar Cxzvf /usr/local containerd-1.7.16-linux-amd64.tar.gz
 
 ## Install containerd as a service
 sudo curl -fsSLo /etc/systemd/system/containerd.service https://raw.githubusercontent.com/containerd/containerd/main/containerd.service

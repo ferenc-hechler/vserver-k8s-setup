@@ -24,7 +24,7 @@ login as newly created user
 # Step 2 - Clone this Repo
 
 ```
-curl https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/main/setup-scripts/02-clone-repo.sh | bash
+curl https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/vps2/setup-scripts/02-clone-repo.sh | bash
 ```
 
 # All following steps (except backup & restore) 
