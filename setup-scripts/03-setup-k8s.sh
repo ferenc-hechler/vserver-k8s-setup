@@ -131,7 +131,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 # before k8s 1.26: 
-kubectl taint nodes --all node-role.kubernetes.io/master-
+kubectl taint nodes --all node-role.kubernetes.io/master- || true
 
 # Install a CNI plugin
 
@@ -144,10 +144,9 @@ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bas
 
 # Add openebs repo to helm
 helm repo add openebs https://openebs.github.io/charts
+helm repo update
 
-kubectl create namespace openebs
-
-helm --namespace=openebs install openebs openebs/openebs
+helm upgrade --install openebs --namespace=openebs --create-namespace openebs/openebs
 
 # define a default storageclass:
 kubectl patch storageclass openebs-hostpath -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
