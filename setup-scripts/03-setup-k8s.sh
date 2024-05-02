@@ -4,9 +4,11 @@
 
 set -xev
 
+
+# find versions using "apt list -a kubeadm"
 K8S_VERSION=1.29.4
-KUBEADM_VERSION=1.29.4-00
-CRITOOLS_VERSION=1.29.4-00
+KUBEADM_VERSION=1.29.4-2.1  
+CRITOOLS_VERSION=1.29.0-1.1
 
 
 # https://kind.sigs.k8s.io/docs/user/known-issues/
@@ -37,21 +39,21 @@ curl -fsSLo containerd-1.7.16-linux-amd64.tar.gz https://github.com/containerd/c
 sudo tar Cxzvf /usr/local containerd-1.7.16-linux-amd64.tar.gz
 
 ## Install containerd as a service
-sudo curl -fsSLo /etc/systemd/system/containerd.service https://raw.githubusercontent.com/containerd/containerd/main/containerd.service
+sudo curl -fsSLo /etc/systemd/system/containerd.service https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/vps2/setup-scripts/03-containerd/containerd.service
 
 sudo systemctl daemon-reload
 sudo systemctl enable --now containerd
 
 ## install runc
 
-curl -fsSLo runc.amd64 https://github.com/opencontainers/runc/releases/download/v1.1.3/runc.amd64
+curl -fsSLo runc.amd64 https://github.com/opencontainers/runc/releases/download/v1.1.12/runc.amd64
 sudo install -m 755 runc.amd64 /usr/local/sbin/runc
 
 ## Install CNI network plugins
 
-curl -fsSLo cni-plugins-linux-amd64-v1.1.1.tgz https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz
+curl -fsSLo cni-plugins-linux-amd64-v1.4.1.tgz https://github.com/containernetworking/plugins/releases/download/v1.4.1/cni-plugins-linux-amd64-v1.4.1.tgz
 sudo mkdir -p /opt/cni/bin
-sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.1.1.tgz
+sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.4.1.tgz
 
 ## Forward IPv4 and let iptables see bridged network traffic
 
@@ -77,17 +79,31 @@ sudo sysctl --system
 # Add Kubernetes GPG key
 sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 
-# Add Kubernetes apt repository
-echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-
-# Fetch package list
+### NEW
+# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+# https://v1-29.docs.kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
 sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
-## this may take a while
+sudo apt-get update
 sudo apt-get install -y kubelet=$KUBEADM_VERSION kubeadm=$KUBEADM_VERSION kubectl=$KUBEADM_VERSION cri-tools=$CRITOOLS_VERSION
-
-# Prevent them from being updated automatically
 sudo apt-mark hold kubelet kubeadm kubectl
+
+
+### OLD
+## Add Kubernetes apt repository
+#echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+#
+## Fetch package list
+#sudo apt-get update
+#
+### this may take a while
+#sudo apt-get install -y kubelet=$KUBEADM_VERSION kubeadm=$KUBEADM_VERSION kubectl=$KUBEADM_VERSION cri-tools=$CRITOOLS_VERSION
+#
+## Prevent them from being updated automatically
+#sudo apt-mark hold kubelet kubeadm kubectl
 
 
 ## Ensure swap is disabled
