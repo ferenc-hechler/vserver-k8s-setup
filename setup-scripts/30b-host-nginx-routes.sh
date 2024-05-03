@@ -6,9 +6,9 @@ cd $(dirname -- $0)
 
 sudo mkdir -p /etc/nginx/certs
 rm -f /etc/nginx/certs/fullchain.pem || true
-sudo cp -f ~/fullchain.pem /etc/nginx/certs/fullchain.pem
+sudo cp -f 20-istio/certs/fullchain.pem /etc/nginx/certs/fullchain.pem
 rm -f /etc/nginx/certs/privkey.pem || true
-sudo cp -f ~/privkey.pem /etc/nginx/certs/privkey.pem
+sudo cp -f 20-istio/certs/privkey.pem /etc/nginx/certs/privkey.pem
 sudo chmod 444 /etc/nginx/certs/*.pem
 
 sudo apt update
