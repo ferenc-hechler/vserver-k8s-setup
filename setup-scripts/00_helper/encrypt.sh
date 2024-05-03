@@ -2,7 +2,7 @@
 
 set -e
 
-echo SOURCE_FILE=$1
+SOURCE_FILE=$1
 test -n $SOURCE_FILE
 test -f "${SOURCE_FILE}"
 

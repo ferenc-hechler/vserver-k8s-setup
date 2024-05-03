@@ -2,7 +2,7 @@
 
 set -e
 
-echo TARGET_FILE=$1
+TARGET_FILE=$1
 test -n "${TARGET_FILE}"
 test -f "${TARGET_FILE}.gpg"
 
