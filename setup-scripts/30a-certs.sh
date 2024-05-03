@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -xe
+
 cd $(dirname -- $0)
 
 00_helper/decrypt.sh 20-istio/certs/fullchain.pem.gpg
