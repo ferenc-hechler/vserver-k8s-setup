@@ -6,7 +6,7 @@ cd $(dirname -- $0)
 
 helm repo add hashicorp https://helm.releases.hashicorp.com
 helm repo update
-helm upgrade --install canvas-vault-hc --namespace canvas-vault --create-namespace --version 0.28.0 --values 60-hashicorp-vault/values.yaml hashicorp/vault 
+helm upgrade --install canvas-vault-hc --namespace canvas-vault --create-namespace --version 0.28.0 --values 60-hashicorp-vault/values.yaml hashicorp/vault --wait 
 
 kubectl apply -n canvas-vault -f 60-hashicorp-vault/canvas-vault-hc-vs.yaml
 
