@@ -17,5 +17,6 @@ do
     sleep 15
     OK=1
     kubectl apply -f ./10-metallb/ipadresspool.yaml || OK=0
-	kubectl apply -f ./10-metallb/l2advertisement.yaml || OK=0
 done
+
+kubectl apply -f ./10-metallb/l2advertisement.yaml
