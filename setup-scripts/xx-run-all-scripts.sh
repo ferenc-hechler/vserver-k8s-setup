@@ -9,5 +9,6 @@ export HELMOPTS=--set=domainLabel1=$DOMAINLABEL1
 ./03-setup-k8s.sh
 ./10-metallb.sh
 ./20-istio.sh
-./30-host-nginx-routes.sh
+./30a-host-nginx-certs
+./30b-host-nginx-routes.sh
 ./40-prometheus-grafana.sh
