@@ -4,5 +4,5 @@ set -xe
 
 cd $(dirname -- $0)
 
-00_helper/decrypt.sh 20-istio/certs/fullchain.pem.gpg
-00_helper/decrypt.sh 20-istio/certs/privkey.pem.gpg
+00-helper/decrypt.sh 30-host-nginx/certs/fullchain.pem.gpg
+00-helper/decrypt.sh 30-host-nginx/certs/privkey.pem.gpg
