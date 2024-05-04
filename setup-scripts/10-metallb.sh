@@ -11,8 +11,11 @@ kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e "s/strictARP: f
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
 
 # give webhook some time to startup
-sleep 30
-
-# configure
-kubectl apply -f ./10-metallb/ipadresspool.yaml
-kubectl apply -f ./10-metallb/l2advertisement.yaml
+OK=0
+while [ $OK -ne 1 ]
+do
+    sleep 15
+    OK=1
+    kubectl apply -f ./10-metallb/ipadresspool.yaml || OK=0
+	kubectl apply -f ./10-metallb/l2advertisement.yaml || OK=0
+done
