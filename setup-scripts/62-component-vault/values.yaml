@@ -1,0 +1,14 @@
+controller:
+  configmap:
+    loglevel: 10
+  deployment:
+    #compconImage: tmforumodacanvas/component-istio-controller:0.4.0
+    compconImage: mtr.devops.telekom.de/magenta_canvas/public:component-istio-controller-0.4.0-compvault
+    imagePullPolicy: Always
+    dataDog:
+      enabled: false
+keycloak:
+  service:
+    type: ClusterIP
+
+    
