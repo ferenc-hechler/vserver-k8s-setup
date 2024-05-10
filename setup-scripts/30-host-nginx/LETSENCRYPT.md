@@ -23,3 +23,7 @@ kubectl create secret -n istio-ingress tls wc-k8s-cluster-4-de-tls2 --key=.lego/
 
 
 https://github.com/go-acme/lego/releases/download/v4.16.1/lego_v4.16.1_linux_amd64.tar.gz
+
+# Cert Manager
+
+https://cert-manager.io/docs/configuration/acme/dns01/#supported-dns01-providers
