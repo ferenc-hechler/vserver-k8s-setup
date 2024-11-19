@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nextcloud-ingress
+  namespace: nextcloud
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production  
+  labels:
+    app: nextcloud
+spec:
+  ingressClassName: nginx
+  tls:
+    - secretName: nextcloud-ssl
+      hosts:
+      - images.k8s.feri.ai          
+  rules:
+  - host: "images.k8s.feri.ai"
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: nextcloud
+              port:
+                number: 8080
