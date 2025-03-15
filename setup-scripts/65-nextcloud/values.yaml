@@ -1,0 +1,12 @@
+nextcloud:
+  #host: nextcloud.kube.home
+  host: images.k8s.feri.ai
+  username: fhadmin
+  #password: ****
+  #trustedDomains: [images.k8s.feri.ai]
+  
+persistence:
+  # Nextcloud Data (/var/www/html)
+  enabled: true
+  size: 100Gi
+

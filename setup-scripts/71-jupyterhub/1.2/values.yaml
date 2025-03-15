@@ -1,0 +1,20 @@
+# singleuser relates to the configuration of KubeSpawner which runs in the hub
+# pod, and its spawning of user pods such as jupyter-myusername.
+singleuser:
+  #uid: 0
+  extraEnv:
+    GRANT_SUDO: "yes"
+    NOTEBOOK_ARGS: "--allow-root"
+  cmd: start-singleuser.sh    
+
+hub:
+  config:
+    Authenticator:
+      admin_users:
+        - feri
+      #allowed_users:
+      #  - user3
+      #  - user4
+    # ...
+    DummyAuthenticator:
+      password: katrIn

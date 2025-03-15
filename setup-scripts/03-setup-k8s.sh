@@ -3,6 +3,22 @@
 # from: https://blog.radwell.codes/2022/07/single-node-kubernetes-cluster-via-kubeadm-on-ubuntu-22-04/
 
 set -xev
+
+K8S_VERSION=1.25.0
+KUBEADM_VERSION=1.25.5-00
+CRITOOLS_VERSION=1.25.0-00
+
+
+# https://kind.sigs.k8s.io/docs/user/known-issues/
+# increase number of watchers (kubectl logs .. -f)
+# original values:
+# fs.inotify.max_user_instances = 128
+# fs.inotify.max_user_watches = 234227
+sudo sysctl fs.inotify.max_user_watches=524288
+sudo sysctl fs.inotify.max_user_instances=512
+echo fs.inotify.max_user_watches = 524288 | sudo tee -a /etc/sysctl.conf > /dev/null
+echo fs.inotify.max_user_instances = 512 | sudo tee -a /etc/sysctl.conf > /dev/null
+
 cd ~
 
 # Install general dependencies
@@ -68,7 +84,7 @@ echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https:/
 sudo apt-get update
 
 ## this may take a while
-sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-get install -y kubelet=$KUBEADM_VERSION kubeadm=$KUBEADM_VERSION kubectl=$KUBEADM_VERSION cri-tools=$CRITOOLS_VERSION
 
 # Prevent them from being updated automatically
 sudo apt-mark hold kubelet kubeadm kubectl
@@ -86,7 +102,7 @@ sudo sed -i -e '/swap/d' /etc/fstab
 
 ## Create the cluster using kubeadm
 
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --kubernetes-version="$K8S_VERSION"
 
 # setup kubectl
 
@@ -97,8 +113,9 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # allow master/control-plane node to run workloads
 
-# before k8s 1.26: kubectl taint nodes --all node-role.kubernetes.io/master-
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+# before k8s 1.26: 
+kubectl taint nodes --all node-role.kubernetes.io/master-
 
 # Install a CNI plugin
 

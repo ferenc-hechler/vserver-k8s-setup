@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restic-pvc-mounter-spark
+  namespace: spark
+spec:
+  selector:
+    matchLabels:
+      app: restic-pvc-mounter-spark
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: restic-pvc-mounter-spark
+      annotations:
+        backup.velero.io/backup-volumes: hub-db-dir,claim-feri,claim-alex,claim-patrick
+    spec:
+      containers:
+      - name: restic-pvc-mounter-spark
+        image: busybox 
+        command: ["/bin/sh", "-c", "trap : TERM INT; sleep 9999999999d & wait"]
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: hub-db-dir
+          mountPath: "/hub-db-dir"
+          readOnly: true
+        - name: claim-feri
+          mountPath: "/claim-feri"
+          readOnly: true
+        - name: claim-alex
+          mountPath: "/claim-alex"
+          readOnly: true
+        - name: claim-patrick
+          mountPath: "/claim-patrick"
+          readOnly: true
+      volumes:
+      - name: hub-db-dir
+        persistentVolumeClaim:
+          claimName: hub-db-dir
+      - name: claim-feri
+        persistentVolumeClaim:
+          claimName: claim-feri
+      - name: claim-alex
+        persistentVolumeClaim:
+          claimName: claim-alex
+      - name: claim-patrick
+        persistentVolumeClaim:
+          claimName: claim-patrick
+          
