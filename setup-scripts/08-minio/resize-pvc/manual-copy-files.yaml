@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minio-temp-volume-mounts
+  namespace: minio
+spec:
+  selector:
+    matchLabels:
+      app: minio-temp-volume-mounts
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: minio-temp-volume-mounts
+    spec:
+      containers:
+      - name: minio-temp-volume-mounts
+        image: "busybox"
+        command: [ "/bin/sh", "-c", "--" ]
+        args: [ "echo waiting 1000 hours;
+        sleep 3600000;
+        echo finished" ]
+        volumeMounts:
+        - mountPath: /minio-data-pvc
+          name: minio-data-pvc
+        - mountPath: /minio-data-pvc-temp
+          name: minio-data-pvc-temp       
+      volumes:
+      - name: minio-data-pvc
+        persistentVolumeClaim:
+          claimName: minio-data-pvc
+      - name: minio-data-pvc-temp
+        persistentVolumeClaim:
+          claimName: minio-data-pvc-temp
+
+        
+          

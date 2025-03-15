@@ -1,0 +1,55 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spark-webui-ingress
+  namespace: spark
+  #annotations:
+  #  cert-manager.io/cluster-issuer: letsencrypt-production  
+  labels:
+    app: canvas-keycloak
+spec:
+  ingressClassName: nginx
+  #tls:
+  #  - secretName: canvas-keycloak-ssl
+  #    hosts:
+  #    - keycloak.k8s.feri.ai              
+  rules:
+  - host: "keycloak.k8s.feri.ai"
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: canvas-keycloak
+              port:
+                number: 8088
+
+
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spark-webui-ingress
+  namespace: spark
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production  
+  labels:
+    app: etherpad
+spec:
+  ingressClassName: nginx
+  tls:
+    - secretName: etherpad-ssl
+      hosts:
+      - etherpad.k8s.feri.ai          
+  rules:
+  - host: "etherpad.k8s.feri.ai"
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: bit-spark-master-svc
+              port:
+                number: 80

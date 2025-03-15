@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jupyter-ingress
+  namespace: spark
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production  
+  labels:
+    app: jupyter
+spec:
+  ingressClassName: nginx
+  tls:
+    - secretName: jupyter-ssl
+      hosts:
+      - jupyter.k8s.feri.ai
+  rules:
+  - host: "jupyter.k8s.feri.ai"
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: proxy-public
+              port:
+                number: 80

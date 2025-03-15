@@ -1,0 +1,81 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: jupyter-backup-cronjob
+  namespace: spark
+  labels:
+    app: jupyter-backup
+spec:
+  schedule: "0 3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: jupyter-backup
+            image: feridock/pgpcloudbackup:0.1
+            command: [ "/bin/sh", "-c", "--" ]
+            args: [ "echo starting remote sync of jupyter-data;
+            set -x;
+            date;
+            rm -rf /backup/jupyter-*.tgz;
+            date;
+            export TODAY=$(date -I);
+            tar cvzf /backup/claim-alex-$TODAY.tgz -C /claim-alex .;
+            date;
+            tar cvzf /backup/claim-patrick-$TODAY.tgz -C /claim-patrick .;
+            date;
+            /app/pgp-cloud-backup.sh;
+            date;
+            /app/pgp-cloud-housekeeping.sh;
+            date;
+            echo finished jupyter-backup"]
+            imagePullPolicy: IfNotPresent
+            #imagePullPolicy: Always
+            env:
+            - name: PGPCB_CONFIG_FILE
+              value: "/app/conf/.pcloud-config"
+            - name: PGPCB_PUBLIC_PGP_KEY_FILE
+              value: "/app/conf/encrypt-key.pub"
+            - name: PGPCB_LOCAL_FOLDER
+              value: "/backup"
+            - name: PGPCB_TEMP_FOLDER
+              value: "/tmp"
+            - name: PGPCB_REMOTE_FOLDER
+              value: "/VSERVERBACKUP/jupyter"
+            - name: PGPCB_DELETE_REMOTE
+              value: "false"
+            - name: PGPCB_KEEP_PERIODS
+              value: "7d4w3m*y"
+            - name: PGPCB_IGNORE_MISSING_TIMESTAMPS
+              value: "false"
+            volumeMounts:
+            - name: config
+              mountPath: "/app/conf"
+              readOnly: true
+            - mountPath: /backup
+              name: backup
+            - mountPath: /tmp
+              name: tmp
+            - mountPath: /claim-alex
+              name: claim-alex
+              readOnly: true
+            - mountPath: /claim-patrick
+              name: claim-patrick
+              readOnly: true
+          volumes:
+          - name: config
+            secret:
+              secretName: jupyter-backup-secret
+          - name: backup
+            emptyDir: {}
+          - name: tmp
+            emptyDir: {}
+          - name: claim-alex
+            persistentVolumeClaim:
+              claimName: claim-alex
+          - name: claim-patrick
+            persistentVolumeClaim:
+              claimName: claim-patrick
+          restartPolicy: Never
+      backoffLimit: 3
