@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: hedgedoc-ssl
       hosts:
-      - hedgedoc.k8s.feri.ai          
+      - hedgedoc.k8s.cluster-4.de          
   rules:
-  - host: "hedgedoc.k8s.feri.ai"
+  - host: "hedgedoc.k8s.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

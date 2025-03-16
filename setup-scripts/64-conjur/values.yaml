@@ -163,7 +163,7 @@ ssl:
   # key:
 
   expiration: 365 # days
-  hostname: "conjur.k8s.feri.ai"
+  hostname: "conjur.k8s.cluster-4.de"
   altNames: []
 
 test:

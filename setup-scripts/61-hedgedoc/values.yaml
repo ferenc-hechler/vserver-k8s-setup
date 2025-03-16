@@ -121,7 +121,7 @@ hedgedoc:
   connection:
     ## if you doesn't using ingress, you can setup domain for your CodiMD instances
     # domain:
-    domain: hedgedoc.k8s.feri.ai
+    domain: hedgedoc.k8s.cluster-4.de
     ## if you want to add port number on your url
     urlAddPort: false
     ## if you use load balancer or setup TLS on ingress

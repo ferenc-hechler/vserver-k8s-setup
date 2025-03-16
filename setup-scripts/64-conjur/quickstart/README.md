@@ -60,11 +60,11 @@ $ conjur variable set -i BotApp/secretVar -v ${secretVal}
 $ conjur -d login -i host/BotApp/myDemoApp -p 490v....qsvz
 
 2023-06-06 23:13:50,100 DEBUG: Attempting to fetch 'host/BotApp/myDemoApp' API key from Conjur...
-2023-06-06 23:13:50,101 DEBUG: Invoke endpoint. Verb: 'GET', Endpoint: 'LOGIN', Params: '{'url': 'https://conjur.k8s.feri.ai', 'account': 'default'}', Data length: '0', Check errors: 'True', SSL verification metadata: '{'mode': <SslVerificationMode.TRUST_STORE: 0>, 'ca_cert_path': None}', Basic auth user: 'host/BotApp/myDemoApp', using API token: 'False', Query params: 'None', Headers: 'None', Decode token: 'True'
+2023-06-06 23:13:50,101 DEBUG: Invoke endpoint. Verb: 'GET', Endpoint: 'LOGIN', Params: '{'url': 'https://conjur.k8s.cluster-4.de', 'account': 'default'}', Data length: '0', Check errors: 'True', SSL verification metadata: '{'mode': <SslVerificationMode.TRUST_STORE: 0>, 'ca_cert_path': None}', Basic auth user: 'host/BotApp/myDemoApp', using API token: 'False', Query params: 'None', Headers: 'None', Decode token: 'True'
 2023-06-06 23:13:50,102 DEBUG: Using selector: SelectSelector
 2023-06-06 23:13:50,106 DEBUG: Creating SSLContext from OS TrustStore for 'Windows'
 2023-06-06 23:13:50,122 DEBUG: SSLContext created successfully
-2023-06-06 23:13:50,293 DEBUG: Invoke endpoint succeeded. Duration: 187ms, Request: GET https://conjur.k8s.feri.ai/authn/default/login, Response: {'status': 200, 'content length': '55'}
+2023-06-06 23:13:50,293 DEBUG: Invoke endpoint succeeded. Duration: 187ms, Request: GET https://conjur.k8s.cluster-4.de/authn/default/login, Response: {'status': 200, 'content length': '55'}
 2023-06-06 23:13:50,293 DEBUG: API key retrieved from Conjur
 2023-06-06 23:13:50,295 DEBUG: Attempting to save credentials to the system's credential store 'Windows WinVaultKeyring'...
 2023-06-06 23:13:50,335 DEBUG: Credentials saved to the 'Windows WinVaultKeyring' credential store
@@ -76,7 +76,7 @@ Successfully logged in to Conjur
 create token
 
 ```
-curl -d "490v....qsvz" -k "https://conjur.k8s.feri.ai/authn/default/host%2FBotApp%2FmyDemoApp/authenticate" > /tmp/conjur_token
+curl -d "490v....qsvz" -k "https://conjur.k8s.cluster-4.de/authn/default/host%2FBotApp%2FmyDemoApp/authenticate" > /tmp/conjur_token
 
 {
   "protected": "eyJhbGciOiJjb25qdXIub3JnL3Nsb3NpbG8vdjIiLCJraWQiOiI1ZjJmNWJiNjdmOTU3YmMzMGEzZjE4YTI2YzJkMDMwODU2ZTk4MWFjNTAxNjdiYjRmNDYyMmEyN2NhNmJhNWY0In0=",
@@ -92,7 +92,7 @@ retrieve value:
 
 ```
 CONT_SESSION_TOKEN=$(cat /tmp/conjur_token| base64 | tr -d '\r\n')
-VAR_VALUE=$(curl -s -k -H "Content-Type: application/json" -H "Authorization: Token token=\"$CONT_SESSION_TOKEN\"" https://conjur.k8s.feri.ai/secrets/default/variable/BotApp%2FsecretVar)
+VAR_VALUE=$(curl -s -k -H "Content-Type: application/json" -H "Authorization: Token token=\"$CONT_SESSION_TOKEN\"" https://conjur.k8s.cluster-4.de/secrets/default/variable/BotApp%2FsecretVar)
 echo $VAR_VALUE
   17ec2d4f48d96b0cb4df3c5f
 ```

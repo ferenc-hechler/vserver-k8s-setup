@@ -8,9 +8,9 @@ spec:
   tls:
     - secretName: k8s2-cert
       hosts:
-      - demoapp.k8s2.feri.ai   
+      - demoapp.k8s2.cluster-4.de   
   rules:
-  - host: "demoapp.k8s2.feri.ai"
+  - host: "demoapp.k8s2.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

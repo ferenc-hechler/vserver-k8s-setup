@@ -142,3 +142,7 @@ helm --namespace=openebs install openebs openebs/openebs
 
 # define a default storageclass:
 kubectl patch storageclass openebs-hostpath -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+
+
+# install socat for routing http/https ports 
+sudo apt-get install -y socat

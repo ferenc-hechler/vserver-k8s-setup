@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: conjur-ssl
       hosts:
-      - conjur.k8s.feri.ai          
+      - conjur.k8s.cluster-4.de          
   rules:
-  - host: "conjur.k8s.feri.ai"
+  - host: "conjur.k8s.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

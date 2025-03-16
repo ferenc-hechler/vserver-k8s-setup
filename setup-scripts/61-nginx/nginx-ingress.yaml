@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: nginx-ssl
       hosts:
-      - nginx.k8s.feri.ai          
+      - nginx.k8s.cluster-4.de          
   rules:
-  - host: "nginx.k8s.feri.ai"
+  - host: "nginx.k8s.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

@@ -44,7 +44,7 @@ kubectl exec -it -n vault vault-0 -- vault operator unseal
 #  Unseal Key (will be hidden): kv8O...z6xq
 ```
 
-## add ingress for vault.k8s.feri.ai
+## add ingress for vault.k8s.cluster-4.de
 
 ```
 kubectl apply -f vault-ing.yaml
@@ -63,8 +63,8 @@ kubectl apply -f vault-ing.yaml
 Download vault binary from [here](https://releases.hashicorp.com/vault/1.13.2/)
 
 ```
-# set VAULT_ADDR=https://vault.k8s.feri.ai
-export VAULT_ADDR=https://vault.k8s.feri.ai
+# set VAULT_ADDR=https://vault.k8s.cluster-4.de
+export VAULT_ADDR=https://vault.k8s.cluster-4.de
 
 $ vault login -method=userpass username=webapp
 
@@ -84,7 +84,7 @@ identity_policies      []
 policies               ["default" "webapp"]
 token_meta_username    webapp
 
-$ vault login -agent-address=https://vault.k8s.feri.ai -method=userpass username=webapp
+$ vault login -agent-address=https://vault.k8s.cluster-4.de -method=userpass username=webapp
 
 $ cat .vault-token
 hvs.CAESIK7dLavQPYaNITYnbTu7NXxaJVVhtZFTOAfbTJiCjADyGh4KHGh2cy5VdzdHek04Tlg1NldqS3F1aWt5R2NlcmU

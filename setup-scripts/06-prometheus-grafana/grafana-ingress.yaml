@@ -10,9 +10,9 @@ spec:
   tls:
     - secretName: grafana-ssl
       hosts:
-      - grafana.k8s.feri.ai 
+      - grafana.k8s.cluster-4.de
   rules:
-  - host: "grafana.k8s.feri.ai"
+  - host: "grafana.k8s.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

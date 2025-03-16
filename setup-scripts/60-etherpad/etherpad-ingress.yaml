@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: etherpad-ssl
       hosts:
-      - etherpad.k8s.feri.ai          
+      - etherpad.k8s.cluster-4.de          
   rules:
-  - host: "etherpad.k8s.feri.ai"
+  - host: "etherpad.k8s.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

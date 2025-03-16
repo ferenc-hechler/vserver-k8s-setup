@@ -13,15 +13,15 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "demoapp.k8s2.feri.ai"
-    - "dashboard.k8s2.feri.ai"
-    - "grafana.k8s2.feri.ai"
-    - "jaeger.k8s2.feri.ai"
-    - "kiali.k8s2.feri.ai"
-    - "minecraft.k8s2.feri.ai"
-    - "minio.k8s2.feri.ai"
-    - "nexus.k8s2.feri.ai"
-    - "s3.k8s2.feri.ai"
+    - "demoapp.k8s2.cluster-4.de"
+    - "dashboard.k8s2.cluster-4.de"
+    - "grafana.k8s2.cluster-4.de"
+    - "jaeger.k8s2.cluster-4.de"
+    - "kiali.k8s2.cluster-4.de"
+    - "minecraft.k8s2.cluster-4.de"
+    - "minio.k8s2.cluster-4.de"
+    - "nexus.k8s2.cluster-4.de"
+    - "s3.k8s2.cluster-4.de"
   - port:
       number: 443
       name: https
@@ -30,12 +30,12 @@ spec:
       mode: SIMPLE
       credentialName: k8s2-cert
     hosts:
-    - "demoapp.k8s2.feri.ai"
-    - "dashboard.k8s2.feri.ai"
-    - "grafana.k8s2.feri.ai"
-    - "jaeger.k8s2.feri.ai"
-    - "kiali.k8s2.feri.ai"
-    - "minecraft.k8s2.feri.ai"
-    - "minio.k8s2.feri.ai"
-    - "nexus.k8s2.feri.ai"
-    - "s3.k8s2.feri.ai"
+    - "demoapp.k8s2.cluster-4.de"
+    - "dashboard.k8s2.cluster-4.de"
+    - "grafana.k8s2.cluster-4.de"
+    - "jaeger.k8s2.cluster-4.de"
+    - "kiali.k8s2.cluster-4.de"
+    - "minecraft.k8s2.cluster-4.de"
+    - "minio.k8s2.cluster-4.de"
+    - "nexus.k8s2.cluster-4.de"
+    - "s3.k8s2.cluster-4.de"

@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: vault-ssl
       hosts:
-      - vault.k8s.feri.ai          
+      - vault.k8s.cluster-4.de          
   rules:
-  - host: "vault.k8s.feri.ai"
+  - host: "vault.k8s.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: nextcloud-ssl
       hosts:
-      - images.k8s.feri.ai          
+      - images.k8s.cluster-4.de          
   rules:
-  - host: "images.k8s.feri.ai"
+  - host: "images.k8s.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

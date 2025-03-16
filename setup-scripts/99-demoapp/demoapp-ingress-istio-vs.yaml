@@ -9,7 +9,7 @@ spec:
   gateways:
   - istio-system/k8s2-gateway
   hosts:
-  - 'demoapp.k8s2.feri.ai'
+  - 'demoapp.k8s2.cluster-4.de'
   http:
   - match:
     - uri:

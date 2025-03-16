@@ -24,7 +24,7 @@ REVISION: 1
 NOTES:
 
 1. Get the application URLs. These should match the configured SSL values:
-  - https://conjur.k8s.feri.ai
+  - https://conjur.k8s.cluster-4.de
 
   It may take 1-10 minutes for the LoadBalancer IP to be available. You can watch
   the status of the progress by running:
@@ -139,7 +139,7 @@ sudo docker run --rm -it --entrypoint /bin/sh cyberark/conjur-cli:8
 in docker container:
 
 ```
-conjur init -u https://conjur.k8s.feri.ai -a "default"       # --self-signed
+conjur init -u https://conjur.k8s.cluster-4.de -a "default"       # --self-signed
 
   Warning: Using self-signed certificates is not recommended and could lead to exposure of sensitive data
 
