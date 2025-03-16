@@ -4,9 +4,14 @@
 
 set -xev
 
-K8S_VERSION=1.25.0
-KUBEADM_VERSION=1.25.5-00
-CRITOOLS_VERSION=1.25.0-00
+K8S_VERSION=1.28.15
+# apt-cache policy kubeadm
+KUBEADM_VERSION=1.28.15-1.1    
+# apt-cache policy critools
+CRITOOLS_VERSION=1.28.0-1.1
+
+CONTAINERD_VERSION=2.0.3
+CNIPLUGIN_VERSION=1.6.2
 
 
 # https://kind.sigs.k8s.io/docs/user/known-issues/
@@ -32,9 +37,9 @@ curl -fsSLo containerd-config.toml https://gist.githubusercontent.com/oradwell/3
 sudo mkdir -p /etc/containerd
 sudo mv containerd-config.toml /etc/containerd/config.toml
 
-curl -fsSLo containerd-1.6.14-linux-amd64.tar.gz https://github.com/containerd/containerd/releases/download/v1.6.14/containerd-1.6.14-linux-amd64.tar.gz
+curl -fsSLo containerd-$CONTAINERD_VERSION-linux-amd64.tar.gz https://github.com/containerd/containerd/releases/download/v$CONTAINERD_VERSION/containerd-$CONTAINERD_VERSION-linux-amd64.tar.gz
 ## Extract the binaries
-sudo tar Cxzvf /usr/local containerd-1.6.14-linux-amd64.tar.gz
+sudo tar Cxzvf /usr/local containerd-$CONTAINERD_VERSION-linux-amd64.tar.gz
 
 ## Install containerd as a service
 sudo curl -fsSLo /etc/systemd/system/containerd.service https://raw.githubusercontent.com/containerd/containerd/main/containerd.service
@@ -49,9 +54,9 @@ sudo install -m 755 runc.amd64 /usr/local/sbin/runc
 
 ## Install CNI network plugins
 
-curl -fsSLo cni-plugins-linux-amd64-v1.1.1.tgz https://github.com/containernetworking/plugins/releases/download/v1.1.1/cni-plugins-linux-amd64-v1.1.1.tgz
+curl -fsSLo cni-plugins-linux-amd64-v$CNIPLUGIN_VERSION.tgz https://github.com/containernetworking/plugins/releases/download/v$CNIPLUGIN_VERSION/cni-plugins-linux-amd64-v$CNIPLUGIN_VERSION.tgz
 sudo mkdir -p /opt/cni/bin
-sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.1.1.tgz
+sudo tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v$CNIPLUGIN_VERSION.tgz
 
 ## Forward IPv4 and let iptables see bridged network traffic
 
@@ -78,7 +83,9 @@ sudo sysctl --system
 sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
 
 # Add Kubernetes apt repository
-echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+# OLD: echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
 # Fetch package list
 sudo apt-get update
@@ -107,7 +114,7 @@ sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --kubernetes-version="$K8S_VE
 # setup kubectl
 
 mkdir -p $HOME/.kube
-sudo cp -if /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 
@@ -115,7 +122,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 # before k8s 1.26: 
-kubectl taint nodes --all node-role.kubernetes.io/master-
+#kubectl taint nodes --all node-role.kubernetes.io/master-
 
 # Install a CNI plugin
 
