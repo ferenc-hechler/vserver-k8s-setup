@@ -4,11 +4,13 @@
 
 set -xev
 
-K8S_VERSION=1.28.15
+
+KUB_DEB_VER=1.31
+K8S_VERSION=1.31.7
 # apt-cache policy kubeadm
-KUBEADM_VERSION=1.28.15-1.1    
+KUBEADM_VERSION=1.31.7-1.1    
 # apt-cache policy critools
-CRITOOLS_VERSION=1.28.0-1.1
+CRITOOLS_VERSION=1.31.1-1.1
 
 CONTAINERD_VERSION=2.0.3
 CNIPLUGIN_VERSION=1.6.2
@@ -84,8 +86,8 @@ sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://pack
 
 # Add Kubernetes apt repository
 # OLD: echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v$KUB_DEB_VER/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v$KUB_DEB_VER/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
 # Fetch package list
 sudo apt-get update
