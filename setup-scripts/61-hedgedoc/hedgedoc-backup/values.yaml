@@ -1,0 +1,17 @@
+pvcName: data-hedgedoc-postgresql-0
+
+pgHost: hedgedoc-postgresql.hedgedoc.svc
+pgUser: codimd
+pgPasswordSecret: hedgedoc-postgresql
+pgPasswordKey: password
+
+backupPvcSize: 10Gi
+# https://crontab.guru/#45_1_*_*_* : "At 01:45."
+backupSQLDumpSchedule: 45 1 * * *
+# https://crontab.guru/#50_2_*_*_* : "At 02:50."
+backupCronSchedule: 50 2 * * *
+
+backupRemoteFolder: /VSERVERBACKUP/hedgedoc
+backupDeleteRemote: false
+backupKeepPeriods: 7d4w3m*y
+backupIgnoreMissingTimestamps: false

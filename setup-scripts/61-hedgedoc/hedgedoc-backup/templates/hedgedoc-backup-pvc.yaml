@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: hedgedoc-backup-pvc
+  name: {{ .Release.Name }}-pvc
   namespace: hedgedoc
   labels:
-    app: hedgedoc-backup
+    app: {{ .Release.Name }}
 spec:
   accessModes:
   - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: {{ .Values.backupPvcSize }}

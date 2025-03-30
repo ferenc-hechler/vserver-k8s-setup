@@ -1,22 +1,21 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: hedgedoc-backup-sqldump-cronjob
+  name: {{ .Release.Name }}-sqldump-cronjob
   namespace: hedgedoc
   labels:
-    app: hedgedoc-backup
+    app: {{ .Release.Name }}
 spec:
-  schedule: "45 1 * * *"
+  schedule: "{{ .Values.backupSQLDumpSchedule }}"
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: hedgedoc-backup-sqldump
+          - name: {{ .Release.Name }}-sqldump
             image: docker.io/bitnami/postgresql:15.2.0-debian-11-r14
             command: [ "/bin/sh", "-c", "--" ]
-            args: [ "echo starting hedgedoc-backup-sqldump;
-            sleep 3600;
+            args: [ "echo starting {{ .Release.Name }}-sqldump;
             set -x;
             date;
             rm -rf /backup/hedgedoc-sqldump-*.sql.gz;
@@ -25,25 +24,26 @@ spec:
             cd /backup;
             pg_dump -h $POSTGRES_HOST -U $POSTGRES_USER | gzip -c > hedgedoc-sqldump-$TODAY.sql.gz;
             date;
-            echo finished hedgedoc-backup-sqldump"]
+			ls -lah /backup/hedgedoc-sqldump-*.sql.gz;
+            echo finished {{ .Release.Name }}-sqldump"]
             imagePullPolicy: IfNotPresent
             #imagePullPolicy: Always
             env:
             - name: POSTGRES_HOST
-              value: hedgedoc-postgresql.hedgedoc.svc
+              value: {{ .Values.pgHost }}
             - name: POSTGRES_USER
-              value: codimd
+              value: {{ .Values.pgUser }}
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
-                  name: hedgedoc-postgresql
+                  name: {{ .Values.pgPasswordSecret }}
+                  key: {{ .Values.pgPasswordKey }}
             volumeMounts:
             - mountPath: /backup
               name: backup
           volumes:
           - name: backup
             persistentVolumeClaim:
-              claimName: hedgedoc-backup-pvc
+              claimName: {{ .Release.Name }}-pvc
           restartPolicy: Never
       backoffLimit: 3

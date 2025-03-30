@@ -1,21 +1,21 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: hedgedoc-backup-cronjob
+  name: {{ .Release.Name }}-cronjob
   namespace: hedgedoc
   labels:
-    app: hedgedoc-backup
+    app: {{ .Release.Name }}
 spec:
-  schedule: "05 2 * * *"
+  schedule: "{{ .Values.backupCronSchedule }}"
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: hedgedoc-backup
+          - name: {{ .Release.Name }}
             image: feridock/pgpcloudbackup:0.1
             command: [ "/bin/sh", "-c", "--" ]
-            args: [ "echo starting hedgedoc-backup;
+            args: [ "echo starting {{ .Release.Name }};
             set -x;
             date;
             rm -rf /backup/hedgedoc-database-*.tgz;
@@ -32,7 +32,7 @@ spec:
             date;
             /app/pgp-cloud-housekeeping.sh;
             date;
-            echo finished hedgedoc-backup"]
+            echo finished {{ .Release.Name }}"]
             imagePullPolicy: IfNotPresent
             #imagePullPolicy: Always
             env:
@@ -45,13 +45,13 @@ spec:
             - name: PGPCB_TEMP_FOLDER
               value: "/tmp"
             - name: PGPCB_REMOTE_FOLDER
-              value: "/VSERVERBACKUP/hedgedoc"
+              value: "{{ .Values.backupRemoteFolder }}"
             - name: PGPCB_DELETE_REMOTE
-              value: "false"
+              value: "{{ .Values.backupDeleteRemote }}"
             - name: PGPCB_KEEP_PERIODS
-              value: "7d4w3m*y"
+              value: "{{ .Values.backupKeepPeriods }}"
             - name: PGPCB_IGNORE_MISSING_TIMESTAMPS
-              value: "false"
+              value: "{{ .Values.backupIgnoreMissingTimestamps }}"
             volumeMounts:
             - mountPath: /backup
               name: backup
@@ -69,13 +69,13 @@ spec:
           volumes:
           - name: backup
             persistentVolumeClaim:
-              claimName: hedgedoc-backup-pvc
+              claimName: {{ .Release.Name }}-pvc
           - name: config
             secret:
-              secretName: hedgedoc-backup-secret
+              secretName: {{ .Release.Name }}-secret
           - name: hedgedoc-database
             persistentVolumeClaim:
-              claimName: data-hedgedoc-postgresql-0
+              claimName: {{ .Values.pvcName }}
           - name: hedgedoc-imageuploads
             persistentVolumeClaim:
               claimName: hedgedoc
