@@ -1,0 +1,67 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: opencloud-restore-job
+  namespace: opencloud
+  labels:
+    app: opencloud-restore
+spec:
+      template:
+        spec:
+          containers:
+          - name: opencloud-restore
+            image: feridock/pgpcloudbackup:0.1
+            command: [ "/bin/sh", "-c", "--" ]
+            args: [ "echo waiting 10h;
+            sleep 36000;
+            echo finished"]
+            securityContext:
+              runAsUser: 0
+              runAsGroup: 0            
+            imagePullPolicy: IfNotPresent
+            #imagePullPolicy: Always
+            env:
+            - name: PGPCB_CONFIG_FILE
+              value: "/app/conf/.pcloud-config"
+            - name: PGPCB_PRIVATE_PGP_KEY_FILE
+              value: "/app/conf/.private-decrypt.key"
+            - name: PGPCB_ENC_KEY_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: opencloud-restore-secret
+                  key: enc-passphrase
+            - name: PGPCB_LOCAL_FOLDER
+              value: "/restore"
+            - name: PGPCB_REMOTE_FOLDER
+              value: "/VSERVERBACKUP/opencloud"
+            - name: PGPCB_FILTER_DATE
+              value: ""
+            - name: PGPCB_DELETE_LOCAL
+              value: "true"
+            - name: PGPCB_TEMP_FOLDER
+              value: "/tmp"
+            volumeMounts:
+            - mountPath: /restore
+              name: restore
+            - name: config
+              mountPath: "/app/conf"
+              readOnly: true
+            - mountPath: /opencloud-data
+              name: opencloud-data
+            - mountPath: /opencloud-config
+              name: opencloud-config
+          volumes:
+          - name: restore
+            persistentVolumeClaim:
+              claimName: opencloud-backup-pvc
+          - name: config
+            secret:
+              secretName: opencloud-restore-secret
+          - name: opencloud-data
+            persistentVolumeClaim:
+              claimName: opencloud-data-pvc
+          - name: opencloud-config
+            persistentVolumeClaim:
+              claimName: opencloud-config-pvc
+          restartPolicy: Never
+      backoffLimit: 3

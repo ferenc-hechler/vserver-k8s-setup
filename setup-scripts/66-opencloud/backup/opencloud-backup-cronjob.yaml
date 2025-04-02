@@ -1,0 +1,80 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: opencloud-backup-cronjob
+  namespace: opencloud
+  labels:
+    app: opencloud-backup
+spec:
+  schedule: "07 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: opencloud-backup
+            image: feridock/pgpcloudbackup:0.1
+            command: [ "/bin/sh", "-c", "--" ]
+            args: [ "echo starting opencloud-backup;
+            echo risc of inconsistency if opencloud is not stopped;
+            set -x;
+            date;
+            rm -rf /backup/opencloud-data*.tgz;
+            rm -rf /backup/opencloud-config*.tgz;
+            date;
+            export TODAY=$(date -I);
+            tar czf /backup/opencloud-data-$TODAY.tgz -C /opencloud-data .;
+            tar czf /backup/opencloud-config-$TODAY.tgz -C /opencloud-config .;
+            date;
+            /app/pgp-cloud-backup.sh;
+            date;
+            /app/pgp-cloud-housekeeping.sh;
+            date;
+            echo finished opencloud-backup"]
+            #securityContext:
+            #  runAsUser: 0
+            #  runAsGroup: 0            
+            imagePullPolicy: IfNotPresent
+            #imagePullPolicy: Always
+            env:
+            - name: PGPCB_CONFIG_FILE
+              value: "/app/conf/.pcloud-config"
+            - name: PGPCB_PUBLIC_PGP_KEY_FILE
+              value: "/app/conf/encrypt-key.pub"
+            - name: PGPCB_LOCAL_FOLDER
+              value: "/backup"
+            - name: PGPCB_TEMP_FOLDER
+              value: "/tmp"
+            - name: PGPCB_REMOTE_FOLDER
+              value: "/VSERVERBACKUP/opencloud"
+            - name: PGPCB_DELETE_REMOTE
+              value: "false"
+            - name: PGPCB_KEEP_PERIODS
+              value: "7d4w3m*y"
+            - name: PGPCB_IGNORE_MISSING_TIMESTAMPS
+              value: "false"
+            volumeMounts:
+            - mountPath: /backup
+              name: backup
+            - name: config
+              mountPath: "/app/conf"
+              readOnly: true
+            - name: opencloud-config
+              mountPath: /opencloud-config
+            - name: opencloud-data
+              mountPath: /opencloud-data                
+          volumes:
+          - name: backup
+            persistentVolumeClaim:
+              claimName: opencloud-backup-pvc
+          - name: config
+            secret:
+              secretName: opencloud-backup-secret
+          - name: opencloud-config
+            persistentVolumeClaim:
+              claimName: opencloud-config-pvc
+          - name: opencloud-data
+            persistentVolumeClaim:
+              claimName: opencloud-data-pvc
+          restartPolicy: Never
+      backoffLimit: 3

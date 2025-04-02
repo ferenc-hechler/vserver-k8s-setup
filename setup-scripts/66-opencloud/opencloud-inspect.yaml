@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: opencloud
+  name: opencloud-inspect
+spec:
+  template:
+    spec:
+      containers:
+      - name: opencloud-inspect
+        image: "opencloudeu/opencloud-rolling:latest"
+        volumeMounts:
+        - name: opencloud-config
+          mountPath: /etc/opencloud
+        - name: opencloud-data
+          mountPath: /var/lib/opencloud
+        command: ["/bin/sh", "-c"]
+        args: ["echo waiting 1h;
+                sleep 3600;
+                echo finished"]
+      volumes:
+        - name: opencloud-config
+          persistentVolumeClaim:
+            claimName: opencloud-config-pvc
+        - name: opencloud-data
+          persistentVolumeClaim:
+            claimName: opencloud-data-pvc
+      restartPolicy: Never

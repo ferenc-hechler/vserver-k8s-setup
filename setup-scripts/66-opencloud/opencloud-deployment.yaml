@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opencloud
+  namespace: opencloud
+  labels:
+    app: opencloud  
+spec:
+  selector:
+    matchLabels:
+      app: opencloud
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: opencloud
+      annotations:
+        backup.velero.io/backup-volumes: opencloud-data
+    spec:
+      containers:
+      - name: opencloud
+        image: "opencloudeu/opencloud-rolling:latest"
+        env:
+        - name: OC_INSECURE
+          value: "true"
+        - name: PROXY_HTTP_ADDR
+          value: 0.0.0.0:9200
+        - name: OC_URL
+          value: https://opencloud.k8s.cluster-4.de
+        volumeMounts:
+          - name: opencloud-config
+            mountPath: /etc/opencloud
+          - name: opencloud-data
+            mountPath: /var/lib/opencloud                  
+      volumes:
+        - name: opencloud-config
+          persistentVolumeClaim:
+            claimName: opencloud-config-pvc
+        - name: opencloud-data
+          persistentVolumeClaim:
+            claimName: opencloud-data-pvc

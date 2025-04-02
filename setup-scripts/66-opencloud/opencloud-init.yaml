@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: opencloud
+  name: opencloud-init
+spec:
+  template:
+    spec:
+      containers:
+      - name: opencloud
+        image: "opencloudeu/opencloud-rolling:latest"
+        env:
+        - name: IDM_ADMIN_PASSWORD
+          value: egalegal
+		- name: OC_INSECURE
+		  value: true
+        volumeMounts:
+        - name: opencloud-config
+          mountPath: /etc/opencloud
+        - name: opencloud-data
+          mountPath: /var/lib/opencloud
+		# command: ["/usr/bin/opencloud"]
+        args: ["init"]
+      volumes:
+        - name: opencloud-config
+          persistentVolumeClaim:
+            claimName: opencloud-config-pvc
+        - name: opencloud-data
+          persistentVolumeClaim:
+            claimName: opencloud-data-pvc
+      restartPolicy: Never
+
+        
+          
