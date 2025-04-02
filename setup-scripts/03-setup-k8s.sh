@@ -51,7 +51,8 @@ sudo systemctl enable --now containerd
 
 ## install runc
 
-curl -fsSLo runc.amd64 https://github.com/opencontainers/runc/releases/download/v1.1.3/runc.amd64
+#curl -fsSLo runc.amd64 https://github.com/opencontainers/runc/releases/download/v1.1.3/runc.amd64
+curl -fsSLo runc.amd64 https://github.com/opencontainers/runc/releases/download/v1.1.15/runc.amd64
 sudo install -m 755 runc.amd64 /usr/local/sbin/runc
 
 ## Install CNI network plugins
