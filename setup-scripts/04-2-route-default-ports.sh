@@ -8,8 +8,5 @@ export NGINX_HTTPS_NODEPORT=$(kubectl get service ingress-nginx-controller -n in
 
 export PUBLIC_IP=$(curl ident.me)
 
-echo nohup socat TCP-LISTEN:80,fork TCP:$PUBLIC_IP:$NGINX_HTTP_NODEPORT  \>/dev/null 2\>\&1 \&
-echo nohup socat TCP-LISTEN:443,fork TCP:$PUBLIC_IP:$NGINX_HTTPS_NODEPORT  \>/dev/null 2\>\&1 \&
-
-sudo nohup socat TCP-LISTEN:80,fork TCP:$PUBLIC_IP:$NGINX_HTTP_NODEPORT  >/dev/null 2>&1 &
-sudo nohup socat TCP-LISTEN:443,fork TCP:$PUBLIC_IP:$NGINX_HTTPS_NODEPORT  >/dev/null 2>&1 &
+sudo nohup socat TCP-LISTEN:80,fork TCP:$PUBLIC_IP:$NGINX_HTTP_NODEPORT & >/dev/null 2>&1
+sudo nohup socat TCP-LISTEN:443,fork TCP:$PUBLIC_IP:$NGINX_HTTPS_NODEPORT &  >/dev/null 2>&1
