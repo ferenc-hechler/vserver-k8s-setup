@@ -1,0 +1,133 @@
+# Vaultwarden Helm Chart Values
+# Using SQLite database for simplicity
+
+# Domain configuration
+domain: "https://vaultwarden.k8s.feri.ai"
+
+# Image configuration
+image:
+  registry: docker.io
+  repository: vaultwarden/server
+  tag: 1.31.0-alpine
+  pullPolicy: IfNotPresent
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 80
+  annotations: {}
+
+# Persistence configuration for SQLite database and attachments
+persistence:
+  enabled: true
+  storageClass: "openebs-hostpath"
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  # Data will be stored in /data which includes:
+  # - db.sqlite3 (main database)
+  # - attachments/
+  # - sends/
+  # - icon_cache/
+
+# Database configuration - using SQLite (default)
+database:
+  type: sqlite
+  # SQLite file will be stored at /data/db.sqlite3
+
+# Admin token for accessing /admin panel
+# Generate with: openssl rand -base64 48
+# IMPORTANT: Set this before first deployment!
+adminToken:
+  # Set to empty string to disable admin panel (not recommended)
+  # Or set via environment variable VAULTWARDEN_ADMIN_TOKEN
+  value: ""
+  # Alternatively use existing secret:
+  # existingSecret: "vaultwarden-admin-token"
+  # existingSecretKey: "token"
+
+# Vaultwarden configuration
+config:
+  # Show password hints (not recommended for security)
+  showPasswordHint: false
+  
+  # Enable signups (set to false after creating accounts)
+  signupsAllowed: true
+  
+  # Verify email on signup (requires SMTP configuration)
+  signupsVerify: false
+  
+  # Restrict signups to specific domains (comma-separated)
+  # signupsDomains: "example.com,example.org"
+  
+  # Allow invited users to sign up even if signups are disabled
+  invitationsAllowed: true
+  
+  # Enable WebSocket notifications for real-time sync
+  websocketEnabled: true
+  
+  # SMTP Configuration (optional, for email notifications)
+  # smtp:
+  #   host: "smtp.example.com"
+  #   from: "vaultwarden@example.com"
+  #   port: 587
+  #   security: starttls  # starttls, force_tls, or off
+  #   username: ""
+  #   password: ""
+  
+  # Organization attachment size limit (in bytes, default 10MB)
+  # orgAttachmentLimit: 10485760
+  
+  # User attachment size limit (in bytes, default 10MB)
+  # userAttachmentLimit: 10485760
+
+# Ingress is managed separately via vaultwarden-ingress.yaml
+ingress:
+  enabled: false
+
+# Pod annotations for backup
+podAnnotations:
+  backup.velero.io/backup-volumes: data
+
+# Security context
+securityContext:
+  runAsUser: 65534
+  runAsGroup: 65534
+  fsGroup: 65534
+  runAsNonRoot: true
+
+# Pod security context
+podSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault
+
+# Environment variables
+# Additional custom environment variables can be added here
+env: {}
+  # LOG_LEVEL: "info"
+  # ROCKET_WORKERS: "10"
+
+# Node selector for pod assignment
+nodeSelector: {}
+
+# Tolerations for pod assignment
+tolerations: []
+
+# Affinity for pod assignment
+affinity: {}
+
+# Enable service monitor for Prometheus (optional)
+serviceMonitor:
+  enabled: false
+
+# Backup configuration (optional)
+# Use Velero for automated backups or create manual backup cronjobs
+# See vaultwarden-backup-cronjob.yaml for manual backup example

@@ -1,0 +1,87 @@
+# Vaultwarden Backup CronJob
+# Backs up SQLite database to a backup PVC
+# Schedule: Daily at 2 AM
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: vaultwarden-backup
+  namespace: vaultwarden
+spec:
+  # Run daily at 2 AM
+  schedule: "0 2 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            backup.velero.io/backup-volumes: backup
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: backup
+            image: alpine:3.19
+            command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              echo "Starting Vaultwarden backup at $(date)"
+              
+              # Create backup directory with timestamp
+              BACKUP_DIR="/backup/vaultwarden-$(date +%Y%m%d-%H%M%S)"
+              mkdir -p "$BACKUP_DIR"
+              
+              # Copy SQLite database
+              if [ -f /data/db.sqlite3 ]; then
+                echo "Backing up SQLite database..."
+                cp /data/db.sqlite3 "$BACKUP_DIR/db.sqlite3"
+                
+                # Verify database integrity
+                apk add --no-cache sqlite
+                sqlite3 "$BACKUP_DIR/db.sqlite3" "PRAGMA integrity_check;"
+              else
+                echo "WARNING: Database file not found!"
+                exit 1
+              fi
+              
+              # Copy attachments and other data
+              echo "Backing up attachments and data..."
+              if [ -d /data/attachments ]; then
+                cp -r /data/attachments "$BACKUP_DIR/"
+              fi
+              if [ -d /data/sends ]; then
+                cp -r /data/sends "$BACKUP_DIR/"
+              fi
+              if [ -d /data/icon_cache ]; then
+                cp -r /data/icon_cache "$BACKUP_DIR/"
+              fi
+              
+              # Create compressed archive
+              echo "Creating compressed archive..."
+              cd /backup
+              tar -czf "$BACKUP_DIR.tar.gz" "$(basename $BACKUP_DIR)"
+              rm -rf "$BACKUP_DIR"
+              
+              # Keep only last 7 days of backups
+              echo "Cleaning old backups..."
+              find /backup -name "vaultwarden-*.tar.gz" -mtime +7 -delete
+              
+              echo "Backup completed successfully at $(date)"
+              ls -lh /backup/
+            volumeMounts:
+            - name: data
+              mountPath: /data
+              readOnly: true
+            - name: backup
+              mountPath: /backup
+          volumes:
+          - name: data
+            persistentVolumeClaim:
+              claimName: vaultwarden
+          - name: backup
+            persistentVolumeClaim:
+              claimName: vaultwarden-backup
