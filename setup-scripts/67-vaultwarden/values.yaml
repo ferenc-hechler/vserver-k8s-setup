@@ -1,3 +1,4 @@
+# see https://github.com/gissilabs/charts/tree/master/vaultwarden
 # Vaultwarden Helm Chart Values
 # Using SQLite database for simplicity
 
@@ -8,7 +9,7 @@ domain: "https://vaultwarden.k8s.cluster-4.de"
 image:
   registry: docker.io
   repository: vaultwarden/server
-  tag: 1.31.0-alpine
+  tag: 1.35.3-alpine
   pullPolicy: IfNotPresent
 
 # Resource limits and requests
