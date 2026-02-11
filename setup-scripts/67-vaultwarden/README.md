@@ -30,7 +30,7 @@ Update the domain in both files:
 - `67-vaultwarden/values.yaml` - Set `domain` parameter
 - `67-vaultwarden/vaultwarden-ingress.yaml` - Set `host` in rules and TLS sections
 
-Default domain: `vaultwarden.k8s.feri.ai`
+Default domain: `vaultwarden.k8s.cluster-4.de`
 
 ### 3. Deploy Vaultwarden
 
@@ -74,8 +74,8 @@ kubectl logs -n vaultwarden -l app.kubernetes.io/name=vaultwarden -f
 
 ### 5. Access Vaultwarden
 
-- Web Vault: `https://vaultwarden.k8s.feri.ai`
-- Admin Panel: `https://vaultwarden.k8s.feri.ai/admin`
+- Web Vault: `https://vaultwarden.k8s.cluster-4.de`
+- Admin Panel: `https://vaultwarden.k8s.cluster-4.de/admin`
 
 Use the admin token from step 1 to access the admin panel.
 

@@ -2,7 +2,7 @@
 # Using SQLite database for simplicity
 
 # Domain configuration
-domain: "https://vaultwarden.k8s.feri.ai"
+domain: "https://vaultwarden.k8s.cluster-4.de"
 
 # Image configuration
 image:
@@ -49,10 +49,10 @@ database:
 adminToken:
   # Set to empty string to disable admin panel (not recommended)
   # Or set via environment variable VAULTWARDEN_ADMIN_TOKEN
-  value: ""
+  # value: ""
   # Alternatively use existing secret:
-  # existingSecret: "vaultwarden-admin-token"
-  # existingSecretKey: "token"
+  existingSecret: "vaultwarden-admin-token"
+  existingSecretKey: "token"
 
 # Vaultwarden configuration
 config:
