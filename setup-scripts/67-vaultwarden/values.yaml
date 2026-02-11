@@ -43,16 +43,16 @@ database:
   type: sqlite
   # SQLite file will be stored at /data/db.sqlite3
 
-# Admin token for accessing /admin panel
-# Generate with: openssl rand -base64 48
-# IMPORTANT: Set this before first deployment!
-adminToken:
-  # Set to empty string to disable admin panel (not recommended)
-  # Or set via environment variable VAULTWARDEN_ADMIN_TOKEN
-  # value: ""
-  # Alternatively use existing secret:
-  existingSecret: "vaultwarden-admin-token"
-  existingSecretKey: "token"
+vaultwarden:
+  # Admin token for accessing /admin panel
+  # Generate with: openssl rand -base64 48
+  # IMPORTANT: Set this before first deployment!
+  admin:
+    # Set to empty string to disable admin panel (not recommended)
+    # Or set via environment variable VAULTWARDEN_ADMIN_TOKEN
+    # value: ""
+    # Alternatively use existing secret with key "admin-token"
+    existingSecret: "vaultwarden-admin-token"
 
 # Vaultwarden configuration
 config:

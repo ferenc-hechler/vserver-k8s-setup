@@ -37,21 +37,24 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "Creating secret 'vaultwarden-admin-token' in namespace 'vaultwarden'..."
     kubectl create secret generic vaultwarden-admin-token \
         -n vaultwarden \
-        --from-literal=token="$TOKEN"
+        --from-literal=admin-token="$TOKEN"
     
     echo ""
     echo "Secret created successfully!"
     echo ""
     echo "To use this secret, update values.yaml:"
-    echo "  adminToken:"
-    echo "    existingSecret: \"vaultwarden-admin-token\""
-    echo "    existingSecretKey: \"token\""
+    echo "  vaultwarden:"
+    echo "    admin:"
+    echo "      enabled: true"
+    echo "      existingSecret: \"vaultwarden-admin-token\""
     echo ""
 else
     echo ""
     echo "Secret not created. You can manually add the token to values.yaml:"
-    echo "  adminToken:"
-    echo "    value: \"$TOKEN\""
+    echo "  vaultwarden:"
+    echo "    admin:"
+    echo "      enabled: true"
+    echo "      token: \"$TOKEN\""
     echo ""
 fi
 
