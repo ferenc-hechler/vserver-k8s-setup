@@ -62,7 +62,7 @@ vaultwarden:
     from: "vaultwarden@anderemails.de"
     fromName: "Vaultwarden k8s.cluster-4.de"
     port: "465"
-	security: "force_tls"
+    security: "force_tls"
     
     
 # Vaultwarden configuration
