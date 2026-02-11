@@ -52,6 +52,7 @@ vaultwarden:
     # Or set via environment variable VAULTWARDEN_ADMIN_TOKEN
     # value: ""
     # Alternatively use existing secret with key "admin-token"
+	enabled: true
     existingSecret: "vaultwarden-admin-token"
 
 # Vaultwarden configuration
