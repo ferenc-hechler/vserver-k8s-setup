@@ -56,15 +56,15 @@ vaultwarden:
     enabled: true
     existingSecret: "vaultwarden-admin-token"
   smtp:
-	enabled: true
-	existingSecret: "vaultwarden-smtp-credentials"
-	host: "smtp.strato.de"
-	from: "vaultwarden@anderemails.de"
-	fromName: "Vaultwarden k8s.cluster-4.de"
-	security: force_tls
-	port: 465
-	
-	
+    enabled: true
+    existingSecret: "vaultwarden-smtp-credentials"
+    host: "smtp.strato.de"
+    from: "vaultwarden@anderemails.de"
+    fromName: "Vaultwarden k8s.cluster-4.de"
+    security: force_tls
+    port: 465
+    
+    
 # Vaultwarden configuration
 config:
   # Show password hints (not recommended for security)
