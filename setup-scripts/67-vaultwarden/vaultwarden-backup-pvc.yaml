@@ -1,0 +1,13 @@
+# Persistent Volume Claim for Vaultwarden Backups
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vaultwarden-backup
+  namespace: vaultwarden
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: openebs-hostpath
+  resources:
+    requests:
+      storage: 20Gi
