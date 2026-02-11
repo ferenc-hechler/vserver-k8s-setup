@@ -9,7 +9,7 @@ domain: "https://vaultwarden.k8s.cluster-4.de"
 image:
   registry: docker.io
   repository: vaultwarden/server
-  tag: 1.35.3-alpine
+  tag: latest-alpine    # 1.35.3-alpine
   pullPolicy: IfNotPresent
 
 # Resource limits and requests
