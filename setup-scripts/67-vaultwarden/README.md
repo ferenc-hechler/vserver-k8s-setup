@@ -118,63 +118,6 @@ Default resources:
 
 Adjust in `values.yaml` based on your usage.
 
-## Backup and Restore
-
-### Option 1: Velero (Recommended)
-
-The deployment includes Velero annotations for automatic backup of the data volume:
-
-```yaml
-podAnnotations:
-  backup.velero.io/backup-volumes: data
-```
-
-### Option 2: Manual Backup with CronJob
-
-1. Create backup PVC:
-   ```bash
-   kubectl apply -f 67-vaultwarden/vaultwarden-backup-pvc.yaml
-   ```
-
-2. Deploy backup CronJob (runs daily at 2 AM):
-   ```bash
-   kubectl apply -f 67-vaultwarden/vaultwarden-backup-cronjob.yaml
-   ```
-
-3. Manual backup trigger:
-   ```bash
-   kubectl create job -n vaultwarden --from=cronjob/vaultwarden-backup vaultwarden-backup-manual
-   ```
-
-4. List backups:
-   ```bash
-   kubectl exec -n vaultwarden -it deployment/vaultwarden -- ls -lh /backup/
-   ```
-
-### Restore from Backup
-
-1. Scale down deployment:
-   ```bash
-   kubectl scale deployment -n vaultwarden vaultwarden --replicas=0
-   ```
-
-2. Restore database:
-   ```bash
-   # Copy backup to pod
-   kubectl cp vaultwarden-backup.tar.gz vaultwarden/vaultwarden-pod:/tmp/
-   
-   # Extract and restore
-   kubectl exec -n vaultwarden vaultwarden-pod -- sh -c "
-     cd /tmp && \
-     tar -xzf vaultwarden-backup.tar.gz && \
-     cp -r vaultwarden-*/* /data/
-   "
-   ```
-
-3. Scale up deployment:
-   ```bash
-   kubectl scale deployment -n vaultwarden vaultwarden --replicas=1
-   ```
 
 ## Monitoring
 
