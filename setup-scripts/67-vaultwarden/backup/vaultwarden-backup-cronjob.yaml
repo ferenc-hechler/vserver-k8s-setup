@@ -1,0 +1,73 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: vaultwarden-backup-cronjob
+  namespace: vaultwarden
+  labels:
+    app: vaultwarden-backup
+spec:
+  schedule: "37 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: vaultwarden-backup
+            image: feridock/pgpcloudbackup:0.1
+            command: [ "/bin/sh", "-c", "--" ]
+            args: [ "echo starting vaultwarden-backup;
+            echo risc of inconsistency if vaultwarden is not stopped;
+            set -x;
+            date;
+            rm -rf /backup/vaultwarden-data*.tgz;
+            date;
+            export TODAY=$(date -I);
+            tar czf /backup/vaultwarden-data-$TODAY.tgz -C /vaultwarden-data .;
+            date;
+            /app/pgp-cloud-backup.sh;
+            date;
+            /app/pgp-cloud-housekeeping.sh;
+            date;
+            echo finished vaultwarden-backup"]
+            #securityContext:
+            #  runAsUser: 0
+            #  runAsGroup: 0            
+            imagePullPolicy: IfNotPresent
+            #imagePullPolicy: Always
+            env:
+            - name: PGPCB_CONFIG_FILE
+              value: "/app/conf/.pcloud-config"
+            - name: PGPCB_PUBLIC_PGP_KEY_FILE
+              value: "/app/conf/encrypt-key.pub"
+            - name: PGPCB_LOCAL_FOLDER
+              value: "/backup"
+            - name: PGPCB_TEMP_FOLDER
+              value: "/tmp"
+            - name: PGPCB_REMOTE_FOLDER
+              value: "/VSERVERBACKUP/vaultwarden"
+            - name: PGPCB_DELETE_REMOTE
+              value: "false"
+            - name: PGPCB_KEEP_PERIODS
+              value: "7d4w3m*y"
+            - name: PGPCB_IGNORE_MISSING_TIMESTAMPS
+              value: "false"
+            volumeMounts:
+            - mountPath: /backup
+              name: backup
+            - name: config
+              mountPath: "/app/conf"
+              readOnly: true
+            - name: vaultwarden-data
+              mountPath: /vaultwarden-data                
+          volumes:
+          - name: backup
+            persistentVolumeClaim:
+              claimName: vaultwarden-backup-pvc
+          - name: config
+            secret:
+              secretName: vaultwarden-backup-secret
+          - name: vaultwarden-data
+            persistentVolumeClaim:
+              claimName: vaultwarden
+          restartPolicy: Never
+      backoffLimit: 3

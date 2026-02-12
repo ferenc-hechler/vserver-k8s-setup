@@ -32,7 +32,7 @@ persistence:
   enabled: true
   storageClass: "openebs-hostpath"
   accessMode: ReadWriteOnce
-  size: 10Gi
+  size: 1Gi
   # Data will be stored in /data which includes:
   # - db.sqlite3 (main database)
   # - attachments/
@@ -84,15 +84,6 @@ config:
   
   # Enable WebSocket notifications for real-time sync
   websocketEnabled: true
-  
-  # SMTP Configuration (optional, for email notifications)
-  # smtp:
-  #   host: "smtp.example.com"
-  #   from: "vaultwarden@example.com"
-  #   port: 587
-  #   security: starttls  # starttls, force_tls, or off
-  #   username: ""
-  #   password: ""
   
   # Organization attachment size limit (in bytes, default 10MB)
   # orgAttachmentLimit: 10485760

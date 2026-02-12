@@ -12,3 +12,4 @@ secrets.yaml
 # Ignore temporary files
 *.tmp
 *.log
+/TEMP/
