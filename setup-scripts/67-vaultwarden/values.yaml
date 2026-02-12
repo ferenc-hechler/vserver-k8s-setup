@@ -9,7 +9,7 @@ domain: "https://vaultwarden.k8s.cluster-4.de"
 image:
   registry: docker.io
   repository: vaultwarden/server
-  tag: latest-alpine    # 1.35.3-alpine
+  tag: 1.35.3-alpine
   pullPolicy: IfNotPresent
 
 # Resource limits and requests
@@ -56,15 +56,15 @@ vaultwarden:
     enabled: true
     existingSecret: "vaultwarden-admin-token"
   smtp:
-	enabled: true
-	existingSecret: "vaultwarden-smtp-credentials"
-	host: "smtp.strato.de"
-	from: "vaultwarden@anderemails.de"
-	fromName: "Vaultwarden k8s.cluster-4.de"
-	security: force_tls
-	port: 465
-	
-	
+    enabled: true
+    existingSecret: "vaultwarden-smtp-credentials"
+    host: "smtp.strato.de"
+    from: "vaultwarden@anderemails.de"
+    fromName: "Vaultwarden k8s.cluster-4.de"
+    port: "465"
+    security: "force_tls"
+    
+    
 # Vaultwarden configuration
 config:
   # Show password hints (not recommended for security)
