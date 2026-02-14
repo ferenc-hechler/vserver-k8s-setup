@@ -6,25 +6,9 @@ metadata:
   annotations:
     # Use Let's Encrypt for TLS certificates
     cert-manager.io/cluster-issuer: letsencrypt-production
-    
     # Nginx specific annotations
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    
-    # WebSocket support for real-time sync
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    nginx.ingress.kubernetes.io/websocket-services: "vaultwarden"
-    
-    # Increase body size for file attachments (default 10MB, increase if needed)
-    nginx.ingress.kubernetes.io/proxy-body-size: "100m"
-    
-    # Security headers
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      more_set_headers "X-Frame-Options: DENY";
-      more_set_headers "X-Content-Type-Options: nosniff";
-      more_set_headers "X-XSS-Protection: 1; mode=block";
-      more_set_headers "Referrer-Policy: same-origin";
   labels:
     app: vaultwarden
 spec:
