@@ -24,6 +24,9 @@ helm upgrade --install vaultwarden \
 # Apply ingress configuration
 kubectl apply -f 67-vaultwarden/vaultwarden-ingress.yaml
 
+# Apply additional passwordsafe.calcbox.de ingress configuration
+kubectl apply -f 67-vaultwarden/passwordsafe-ingress.yaml
+
 echo ""
 echo "================================================================"
 echo "Vaultwarden installation complete!"
