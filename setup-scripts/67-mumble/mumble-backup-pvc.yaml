@@ -1,0 +1,13 @@
+# Persistent Volume Claim for Mumble Backups
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mumble-backup
+  namespace: mumble
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: openebs-hostpath
+  resources:
+    requests:
+      storage: 20Gi

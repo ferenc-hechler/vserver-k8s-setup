@@ -1,0 +1,79 @@
+image:
+  repository: ghcr.io/mumble-voip/mumble-server
+  tag: v1.5.857-0
+  pullPolicy: IfNotPresent
+
+# Custom labels for all resources
+customLabels: {}
+  # team: devops
+  # environment: production
+  # app.kubernetes.io/part-of: mumble-cluster
+
+service:
+  type: NodePort
+  externalIPs: []
+  ports:
+    - name: mumble-tcp
+      port: 64738
+      targetPort: 64738
+      protocol: TCP
+    - name: mumble-udp
+      port: 64738
+      targetPort: 64738
+      protocol: UDP
+
+persistence:
+  enabled: true
+  storageClass: "openebs-hostpath"
+  accessModes:
+    - ReadWriteOnce
+  size: 1Gi
+
+config: {
+  certrequired: "true",
+  autobanSuccessfulConnections: "false",
+  serverpassword: "test-pw",
+  # server_password: "pass"
+  # welcometext: "Welcome to my Mumble server"
+  # registerName: "My Mumble Server"
+  # bandwidth: "130000"
+  # users: "100"
+}
+
+environment:
+  acceptUnknownSettings: false
+  verbose: false
+  chownData: true
+  customConfigFile: ""
+
+superuserPassword:
+  existingSecret: ""
+  existingSecretKey: "password"
+  generate: true
+  length: 16
+
+certificate:
+  generate: false
+  existingSecret: ""
+  spec:
+    dnsNames: []
+      # dnsNames:
+      #   - mumble.example.com
+    issuerRef: {}
+      #   group: cert-manager.io
+      #   kind: ClusterIssuer
+      #   name: cluster-issuer-name
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 50m
+  #   memory: 64Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,0 +1,14 @@
+# Ignore backup files
+backups/
+*.tar.gz
+*.sql
+*.db
+*.sqlite3
+
+# Ignore local configuration overrides
+local-values.yaml
+secrets.yaml
+
+# Ignore temporary files
+*.tmp
+*.log
