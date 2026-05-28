@@ -12,9 +12,9 @@ spec:
   #tls:
   #  - secretName: canvas-keycloak-ssl
   #    hosts:
-  #    - keycloak.k8s.cluster-4.de              
+  #    - keycloak.vps-2.cluster-4.de              
   rules:
-  - host: "keycloak.k8s.cluster-4.de"
+  - host: "keycloak.vps-2.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

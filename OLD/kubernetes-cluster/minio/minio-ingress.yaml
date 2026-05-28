@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: minio-ssl
       hosts:
-      - minio.k8s.cluster-4.de              
+      - minio.vps-2.cluster-4.de              
   rules:
-  - host: "minio.k8s.cluster-4.de"
+  - host: "minio.vps-2.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

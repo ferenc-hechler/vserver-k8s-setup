@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: wordpress-ssl
       hosts:
-      - wordpress.k8s.cluster-4.de          
+      - wordpress.vps-2.cluster-4.de          
   rules:
-  - host: "wordpress.k8s.cluster-4.de"
+  - host: "wordpress.vps-2.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

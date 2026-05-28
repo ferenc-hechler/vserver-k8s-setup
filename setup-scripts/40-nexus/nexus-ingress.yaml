@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: nexus-ssl
       hosts:
-      - nexus.k8s.cluster-4.de          
+      - nexus.vps-2.cluster-4.de          
   rules:
-  - host: "nexus.k8s.cluster-4.de"
+  - host: "nexus.vps-2.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

@@ -10,9 +10,9 @@ spec:
   tls:
     - secretName: grafana-ssl
       hosts:
-      - grafana.k8s.cluster-4.de 
+      - grafana.vps-2.cluster-4.de 
   rules:
-  - host: "grafana.k8s.cluster-4.de"
+  - host: "grafana.vps-2.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

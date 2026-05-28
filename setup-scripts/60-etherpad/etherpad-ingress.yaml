@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: etherpad-ssl
       hosts:
-      - etherpad.k8s.cluster-4.de          
+      - etherpad.vps-2.cluster-4.de          
   rules:
-  - host: "etherpad.k8s.cluster-4.de"
+  - host: "etherpad.vps-2.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

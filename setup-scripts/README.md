@@ -11,7 +11,7 @@ Important: the script contains my public SSH key to allow login with ssh. You sh
 replace the value in `echo "ssh-ed25519 AAAAC3Nza...` with your public key.
 
 ```
-curl -O https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/main/setup-scripts/01-create-user.sh
+curl -O https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/vps-2/setup-scripts/01-create-user.sh
 source 01-create-user.sh ferenc
    <enter hidden password>
 
@@ -24,7 +24,7 @@ login as newly created user
 # Step 2 - Clone this Repo
 
 ```
-curl https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/main/setup-scripts/02-clone-repo.sh | bash
+curl https://raw.githubusercontent.com/ferenc-hechler/vserver-k8s-setup/vps-2/setup-scripts/02-clone-repo.sh | bash
 ```
 
 # All following steps (except backup & restore) 

@@ -3,7 +3,7 @@
 # Using SQLite database for simplicity
 
 # Domain configuration
-domain: "https://vaultwarden.k8s.cluster-4.de"
+domain: "https://vaultwarden.vps-2.cluster-4.de"
 
 # Image configuration
 image:
@@ -60,7 +60,7 @@ vaultwarden:
     existingSecret: "vaultwarden-smtp-credentials"
     host: "smtp.strato.de"
     from: "vaultwarden@anderemails.de"
-    fromName: "Vaultwarden k8s.cluster-4.de"
+    fromName: "Vaultwarden vps-2.cluster-4.de"
     port: "465"
     security: "force_tls"
     

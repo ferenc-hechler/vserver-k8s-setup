@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: nginx-ssl
       hosts:
-      - nginx.k8s.cluster-4.de          
+      - nginx.vps-2.cluster-4.de          
   rules:
-  - host: "nginx.k8s.cluster-4.de"
+  - host: "nginx.vps-2.cluster-4.de"
     http:
       paths:
         - pathType: Prefix

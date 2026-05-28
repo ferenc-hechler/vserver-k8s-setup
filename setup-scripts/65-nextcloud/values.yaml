@@ -1,9 +1,9 @@
 nextcloud:
   #host: nextcloud.kube.home
-  host: images.k8s.cluster-4.de
+  host: images.vps-2.cluster-4.de
   username: fhadmin
   #password: ****
-  #trustedDomains: [images.k8s.cluster-4.de]
+  #trustedDomains: [images.vps-2.cluster-4.de]
   
 persistence:
   # Nextcloud Data (/var/www/html)

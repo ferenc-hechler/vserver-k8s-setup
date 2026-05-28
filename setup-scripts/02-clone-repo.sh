@@ -11,3 +11,5 @@ mkdir -p ~/git
 cd ~/git
 
 git clone https://github.com/ferenc-hechler/vserver-k8s-setup.git
+cd vserver-k8s-setup
+git checkout vps-2
