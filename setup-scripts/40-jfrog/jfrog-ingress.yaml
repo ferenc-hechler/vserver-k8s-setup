@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jfrog-ingress
+  namespace: jfrog
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production  
+  labels:
+    app: jfrog
+spec:
+  ingressClassName: nginx
+  tls:
+    - secretName: jfrog-ssl
+      hosts:
+      - jfrog.vps-2.cluster-4.de          
+  rules:
+  - host: "jfrog.vps-2.cluster-4.de"
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: jfrog-artifactory-nginx
+              port:
+                number: 80
