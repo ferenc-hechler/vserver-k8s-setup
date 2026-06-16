@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  labels:
+    app: yopass
+  name: yopass-ingress
+  namespace: yopass
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: yopass.k8s.cluster-4.de
+    http:
+      paths:
+      - backend:
+          service:
+            name: yopass
+            port:
+              number: 3000
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - yopass.k8s.cluster-4.de
+    secretName: yopass-ssl
