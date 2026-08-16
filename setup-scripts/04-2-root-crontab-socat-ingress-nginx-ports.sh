@@ -14,4 +14,7 @@ then
   export MUMBLE_NODEPORT=$(kubectl get service mumble -n mumble -o  go-template='{{ (index .spec.ports 0).nodePort}}')
   nohup socat TCP-LISTEN:61440,fork TCP:$PUBLIC_IP:$MUMBLE_NODEPORT & >/dev/null 2>&1
   nohup socat UDP-LISTEN:61440,fork UDP:$PUBLIC_IP:$MUMBLE_NODEPORT & >/dev/null 2>&1
+
+  export MINECRAFT_NODEPORT=$(kubectl get service minecraft-service -n minecraft -o  go-template='{{ (index .spec.ports 0).nodePort}}')
+  nohup socat TCP-LISTEN:61441,fork TCP:$PUBLIC_IP:$MINECRAFT_NODEPORT  & >/dev/null 2>&1
 fi
