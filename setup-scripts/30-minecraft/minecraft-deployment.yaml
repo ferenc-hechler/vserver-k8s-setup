@@ -17,31 +17,34 @@ spec:
     spec:
       containers:
       - name: minecraft
-        #image: "itzg/minecraft-server:java8-multiarch"
+        #image: "itzg/minecraft-server:java8-multiarch" 
         image: "itzg/minecraft-server:2024.3.0-java8-multiarch"
+        #image: "itzg/minecraft-server:2026.8.0-java8-multiarch" # ErrImagePull
         env:
         - name: EULA
           value: "TRUE"
         - name: TYPE
-          value: "FORGE"
+          value: "VANILLA"
+#          value: "FORGE"
         - name: VERSION
-          value: "1.12.2"
-        - name: FORGE_VERSION
-          value: "14.23.5.2860"
+          value: "1.5.2"
+#          value: "1.12.2"
+#        - name: FORGE_VERSION
+#          value: "14.23.5.2860"
         - name: MAX_MEMORY
           value: "8G"
-        - name: MODPACK
+#        - name: MODPACK
           #value: "https://filedn.eu/lwAjS7B5boTSPWN01fknj4b/mc-mods/mods.zip"
-          value: "http://patrick.hechler.de/Downloads/mods.zip"
+#          value: "http://patrick.hechler.de/Downloads/mods.zip"
         - name: REMOVE_OLD_MODS
           value: "TRUE"
-        - name: GENERIC_PACKS_PREFIX
-          value: "http://patrick.hechler.de/Downloads/"
-        - name: GENERIC_PACKS_SUFFIX
-          value: ".zip"
-        - name: GENERIC_PACKS
+#        - name: GENERIC_PACKS_PREFIX
+#          value: "http://patrick.hechler.de/Downloads/"
+#        - name: GENERIC_PACKS_SUFFIX
+#          value: ".zip"
+#        - name: GENERIC_PACKS
         #  value: "icon,config"
-          value: "config"
+#          value: "config"
         #- name: OPS
         #  value: "patricklas,5ba3d1d5-92bd-3530-a98b-63fb3670230d,a86900d5-eed3-48d3-9162-00fdf0cec5f9"
         - name: OPS_FILE
@@ -74,7 +77,7 @@ spec:
         - name: SERVER_NAME
           value: "PatMCS"
         - name: MOTD
-          value: "PatMCS Server v1.12 with 50 mods, you should have even more"
+          value: "PatMCS Server vanilla 1.5.2"
         volumeMounts:
         - mountPath: /data
           name: data          
@@ -88,6 +91,3 @@ spec:
       - name: config
         configMap:
           name: minecraft-config
-
-        
-          
