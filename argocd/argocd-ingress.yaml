@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"	
   name: argocd-ing
   namespace: argocd
 spec:
@@ -15,10 +16,10 @@ spec:
           service:
             name: argocd-server
             port:
-              number: 80
+              number: 443
         path: /
         pathType: Prefix
   tls:
   - hosts:
     - argocd.vps-2.cluster-4.de
-    secretName: grafana3-ssl
+    secretName: argocd-ssl

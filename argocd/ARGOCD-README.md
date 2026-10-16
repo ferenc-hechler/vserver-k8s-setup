@@ -1,5 +1,12 @@
 # ArgoCD
 
+## KUBECONFIG
+
+```
+set KUBECONFIG=%USERPROFILE%\.kube\config-vps2
+kubectl config set-context --current --namespace=argocd
+```
+
 ## installation
 
 ```
