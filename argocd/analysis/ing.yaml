@@ -1,0 +1,53 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    kubectl.kubernetes.io/last-applied-configuration: >
+      {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{"cert-manager.io/cluster-issuer":"letsencrypt-production"},"labels":{"app.kubernetes.io/instance":"bgd-app"},"name":"bgd-ing","namespace":"bgd"},"spec":{"ingressClassName":"nginx","rules":[{"host":"bgd.vps-2.cluster-4.de","http":{"paths":[{"backend":{"service":{"name":"bgd","port":{"number":8080}}},"path":"/","pathType":"Prefix"}]}}],"tls":[{"hosts":["bgd.vps-2.cluster-4.de"],"secretName":"bgd-ssl"}]}}
+  creationTimestamp: '2026-10-16T14:16:42Z'
+  generation: 1
+  labels:
+    app.kubernetes.io/instance: bgd-app
+  managedFields:
+    - apiVersion: networking.k8s.io/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            .: {}
+            'f:cert-manager.io/cluster-issuer': {}
+            'f:kubectl.kubernetes.io/last-applied-configuration': {}
+          'f:labels':
+            .: {}
+            'f:app.kubernetes.io/instance': {}
+        'f:spec':
+          'f:ingressClassName': {}
+          'f:rules': {}
+          'f:tls': {}
+      manager: argocd-application-controller
+      operation: Update
+      time: '2026-10-16T14:16:42Z'
+  name: bgd-ing
+  namespace: bgd
+  resourceVersion: '31885661'
+  uid: 7954323d-99cc-4313-8e9c-8fed94ed6099
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: bgd.vps-2.cluster-4.de
+      http:
+        paths:
+          - backend:
+              service:
+                name: bgd
+                port:
+                  number: 8080
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - bgd.vps-2.cluster-4.de
+      secretName: bgd-ssl
+status:
+  loadBalancer: {}
