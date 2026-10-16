@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  name: argocd-ing
+  namespace: argocd
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: argocd.vps-2.cluster-4.de
+    http:
+      paths:
+      - backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - argocd.vps-2.cluster-4.de
+    secretName: grafana3-ssl
