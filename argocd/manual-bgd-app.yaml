@@ -15,3 +15,5 @@ spec:
     repoURL: https://github.com/ferenc-hechler/vserver-k8s-setup.git
     path: argocd/gitops-cookbook-sc/ch07/bgd
     targetRevision: vps-2
+  syncPolicy:
+    automated: {}
