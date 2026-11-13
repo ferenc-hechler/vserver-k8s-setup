@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: hedgedoc-ssl
       hosts:
-      - hedgedoc.vps-2.cluster-4.de          
+      - hedgedoc.vps-2.calcbox.de          
   rules:
-  - host: "hedgedoc.vps-2.cluster-4.de"
+  - host: "hedgedoc.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix

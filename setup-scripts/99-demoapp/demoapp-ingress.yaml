@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: "demoapp.vps-2.cluster-4.de"
+  - host: "demoapp.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix

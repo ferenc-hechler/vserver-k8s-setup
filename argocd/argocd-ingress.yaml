@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: argocd.vps-2.cluster-4.de
+  - host: argocd.vps-2.calcbox.de
     http:
       paths:
       - backend:
@@ -21,5 +21,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - argocd.vps-2.cluster-4.de
+    - argocd.vps-2.calcbox.de
     secretName: argocd-ssl

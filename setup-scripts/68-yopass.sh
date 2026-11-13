@@ -22,7 +22,7 @@ echo ""
 echo "================================================================"
 echo "Yopass installation complete!"
 echo ""
-echo "Access the web interface at: https://yopass.k8s.cluster-4.de"
+echo "Access the web interface at: https://yopass.vps-2.calcbox.de"
 echo ""
 echo "================================================================"
 

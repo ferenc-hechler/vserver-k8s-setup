@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: vault-ssl
       hosts:
-      - vault.vps-2.cluster-4.de          
+      - vault.vps-2.calcbox.de          
   rules:
-  - host: "vault.vps-2.cluster-4.de"
+  - host: "vault.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix

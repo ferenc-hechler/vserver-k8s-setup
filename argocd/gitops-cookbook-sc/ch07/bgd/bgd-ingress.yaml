@@ -8,7 +8,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: bgd.vps-2.cluster-4.de
+  - host: bgd.vps-2.calcbox.de
     http:
       paths:
       - backend:
@@ -20,5 +20,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - bgd.vps-2.cluster-4.de
+    - bgd.vps-2.calcbox.de
     secretName: bgd-ssl

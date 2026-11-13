@@ -10,7 +10,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: yopass.k8s.cluster-4.de
+  - host: yopass.vps-2.calcbox.de
     http:
       paths:
       - backend:
@@ -22,5 +22,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - yopass.k8s.cluster-4.de
+    - yopass.vps-2.calcbox.de
     secretName: yopass-ssl

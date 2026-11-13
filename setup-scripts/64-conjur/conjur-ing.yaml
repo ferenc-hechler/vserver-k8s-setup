@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: conjur-ssl
       hosts:
-      - conjur.vps-2.cluster-4.de          
+      - conjur.vps-2.calcbox.de          
   rules:
-  - host: "conjur.vps-2.cluster-4.de"
+  - host: "conjur.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix

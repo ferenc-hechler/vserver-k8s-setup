@@ -163,7 +163,7 @@ ssl:
   # key:
 
   expiration: 365 # days
-  hostname: "conjur.vps-2.cluster-4.de"
+  hostname: "conjur.vps-2.calcbox.de"
   altNames: []
 
 test:

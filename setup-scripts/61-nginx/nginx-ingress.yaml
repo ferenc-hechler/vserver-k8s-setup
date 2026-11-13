@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: nginx-ssl
       hosts:
-      - nginx.vps-2.cluster-4.de          
+      - nginx.vps-2.calcbox.de          
   rules:
-  - host: "nginx.vps-2.cluster-4.de"
+  - host: "nginx.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix

@@ -233,7 +233,7 @@ export PUBLIC_IP=$(curl ident.me)
 sudo nohup socat TCP-LISTEN:80,fork TCP:$PUBLIC_IP:$INGRESS_PORT  >/dev/null 2>&1 &
 sudo nohup socat TCP-LISTEN:443,fork TCP:$PUBLIC_IP:$SECURE_INGRESS_PORT  >/dev/null 2>&1 &
 
-[in browser] http://k8s2.cluster-4.de/productpage
+[in browser] http://vps-2.calcbox.de/productpage
 ```
 
 Install Kiali, Prometheus and Grafana
@@ -252,13 +252,13 @@ istioctl dashboard kiali
 [in another terminal]
 sudo nohup socat TCP-LISTEN:8080,fork TCP:localhost:20001  >/dev/null 2>&1 &
 
-[in browser] k8s2.cluster-4.de:8080/kiali/
+[in browser] vps-2.calcbox.de:8080/kiali/
 ```
 
 Generate traffic
 
 ```
-GATEWAY_URL=k8s2.cluster-4.de
+GATEWAY_URL=vps-2.calcbox.de
 
 for i in $(seq 1 100); do curl -s -o /dev/null "http://$GATEWAY_URL/productpage"; done
 ```

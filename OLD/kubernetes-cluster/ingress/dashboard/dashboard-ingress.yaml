@@ -11,9 +11,9 @@ spec:
   tls:
     - secretName: dashboard-ssl
       hosts:
-      - dashboard.vps-2.cluster-4.de 
+      - dashboard.vps-2.calcbox.de 
   rules:
-  - host: "dashboard.vps-2.cluster-4.de"
+  - host: "dashboard.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix

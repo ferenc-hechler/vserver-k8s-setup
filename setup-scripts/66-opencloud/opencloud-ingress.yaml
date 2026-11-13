@@ -13,9 +13,9 @@ spec:
   tls:
     - secretName: opencloud-ssl
       hosts:
-      - opencloud.vps-2.cluster-4.de          
+      - opencloud.vps-2.calcbox.de          
   rules:
-  - host: "opencloud.vps-2.cluster-4.de"
+  - host: "opencloud.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix

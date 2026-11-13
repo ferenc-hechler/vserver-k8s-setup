@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: jupyter-ssl
       hosts:
-      - jupyter.vps-2.cluster-4.de
+      - jupyter.vps-2.calcbox.de
   rules:
-  - host: "jupyter.vps-2.cluster-4.de"
+  - host: "jupyter.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix

@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: jfrog-ssl
       hosts:
-      - jfrog.vps-2.cluster-4.de          
+      - jfrog.vps-2.calcbox.de          
   rules:
-  - host: "jfrog.vps-2.cluster-4.de"
+  - host: "jfrog.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix

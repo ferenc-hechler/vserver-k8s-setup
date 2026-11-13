@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: nexus-ssl
       hosts:
-      - nexus.vps-2.cluster-4.de          
+      - nexus.vps-2.calcbox.de          
   rules:
-  - host: "nexus.vps-2.cluster-4.de"
+  - host: "nexus.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix

@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: minio-ssl
       hosts:
-      - minio.vps-2.cluster-4.de              
+      - minio.vps-2.calcbox.de              
   rules:
-  - host: "minio.vps-2.cluster-4.de"
+  - host: "minio.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix
