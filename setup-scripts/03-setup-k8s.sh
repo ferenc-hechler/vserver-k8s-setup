@@ -80,7 +80,7 @@ sudo apt-get install -y apt-transport-https ca-certificates curl gpg
 
 # GPG-Key erstellen und Repository einbinden (Beispiel für eine stabile Version)
 sudo mkdir -p -m 755 /etc/apt/keyrings
-curl -fsSL https://pkgs.k8s.io/core:/stable:/$K8S_VERSION/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/$K8S_VERSION/deb/Release.key | sudo gpg --batch --yes --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/$K8S_VERSION/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
@@ -104,6 +104,12 @@ sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --apiserver-advertise-address
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+## copy kubeconfig to root user for crontab usage
+
+sudo mkdir -p /root/.kube
+sudo cp $HOME/.kube/config /root/.kube/config
+
 
 
 # Schritt 5: Container Network Interface (CNI) installieren
@@ -141,5 +147,4 @@ kubectl patch storageclass openebs-hostpath -p '{"metadata": {"annotations":{"st
 
 # install socat for routing http/https ports 
 sudo apt-get install -y socat
-
 
