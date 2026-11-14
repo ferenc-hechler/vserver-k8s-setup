@@ -1,27 +1,27 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: wordpress-ingress
-  namespace: wordpress
+  name: wordpress2-ingress
+  namespace: wordpress2
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production  
   labels:
-    app: wordpress
+    app: wordpress2
 spec:
   ingressClassName: nginx
   tls:
-    - secretName: wordpress-ssl
+    - secretName: wordpress2-ssl
       hosts:
-      - wordpress.vps-2.calcbox.de          
+      - wordpress2.vps-2.calcbox.de          
   rules:
-  - host: "wordpress.vps-2.calcbox.de"
+  - host: "wordpress2.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix
           path: "/"
           backend:
             service:
-              name: wordpress
+              name: wordpress2
               port:
                 number: 80
 
