@@ -10,9 +10,9 @@ spec:
   tls:
     - secretName: grafana-ssl
       hosts:
-      - grafana2.vps-2.calcbox.de
+      - grafana.vps-2.calcbox.de
   rules:
-  - host: "grafana2.vps-2.calcbox.de"
+  - host: "grafana.vps-2.calcbox.de"
     http:
       paths:
         - pathType: Prefix
