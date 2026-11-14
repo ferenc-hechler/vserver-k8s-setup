@@ -27,9 +27,9 @@ spec:
         image:
           repository: ocfork/wordpress-updraft
           pullPolicy: Always
-		extraEnvVars:
-		- name: WORDPRESS_EXTRA_PLUGINS
-		  value: "updraftplus"
+        extraEnvVars:
+        - name: WORDPRESS_EXTRA_PLUGINS
+          value: "updraftplus"
         global:
           security:
             allowInsecureImages: true
