@@ -16,6 +16,10 @@ spec:
         service:
           type: ClusterIP
         wordpressUsername: vps-2adMIN
+        # Passwort liegt nicht im Git, sondern im Secret "wordpress-credentials"
+        # (Key: wordpress-password), siehe Sealed Secret / manuell angelegt.
+        existingSecret: wordpress-credentials
+
         readinessProbe:
           enabled: false
         livenessProbe:
