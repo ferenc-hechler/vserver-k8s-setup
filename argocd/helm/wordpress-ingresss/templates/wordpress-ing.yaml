@@ -12,9 +12,9 @@ spec:
   tls:
     - secretName: wordpress-ssl
       hosts:
-      - wordpress.{{ .Values.domain }}
+      - wordpress.{{ .Values.parentDomain }}
   rules:
-  - host: "wordpress.{{ .Values.domain }}"
+  - host: "wordpress.{{ .Values.parentDomain }}"
     http:
       paths:
         - pathType: Prefix
