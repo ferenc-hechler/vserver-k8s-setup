@@ -24,6 +24,8 @@ spec:
           enabled: false
         livenessProbe:
           enabled: true
+		image:
+		  repository: ocfork/wordpress-updraft
   destination:
     server: https://kubernetes.default.svc
     namespace: wordpress
