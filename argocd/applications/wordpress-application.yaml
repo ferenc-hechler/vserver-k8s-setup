@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wordpress
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    chart: wordpress
+    repoURL: registry-1.docker.io/bitnamicharts
+    targetRevision: 34.2.5
+    helm:
+      values: |
+        service:
+          type: ClusterIP
+        wordpressUsername: vps-2adMIN
+        readinessProbe:
+          enabled: false
+        livenessProbe:
+          enabled: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: wordpress
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

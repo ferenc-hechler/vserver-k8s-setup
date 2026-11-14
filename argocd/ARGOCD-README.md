@@ -12,7 +12,20 @@ kubectl config set-context --current --namespace=argocd
 ```
 kubectl create ns argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.3.4/manifests/install.yaml
+kubectl apply -f argocd-ingress.yaml
 ```
+
+## Initial Password
+
+login as admin with initial password:
+
+```
+kubectl get secrets argocd-initial-admin-secret --template={{.data.password}} | base64 -d
+```
+
+* https://argocd.vps-2.calcbox.de
+
+
 
 ## Ingress wird nicht healthy
 
@@ -40,6 +53,21 @@ Alternative using patch:
 
 ```
 kubectl -n argocd patch configmap argocd-cm --type merge -p "{\"data\":{\"resource.customizations.health.networking.k8s.io_Ingress\":\"hs = {}\nhs.status = \\\"Healthy\\\"\nreturn hs\n\"}}"
+```
+
+# Applications
+
+## Wordpress
+
+```
+$ kubectl apply -f applications\wordpress-application.yaml
+```
+
+es erscheint eine Warnung. Diese sollte ignoreiert werden, argocd erwartet das alte finalizer format:
+
+```
+Warning: metadata.finalizers: "resources-finalizer.argocd.argoproj.io": prefer a domain-qualified finalizer name including a path (/) to avoid accidental conflicts with other finalizer writers
+application.argoproj.io/wordpress created
 ```
 
 ## Uninstall ArgoCD
