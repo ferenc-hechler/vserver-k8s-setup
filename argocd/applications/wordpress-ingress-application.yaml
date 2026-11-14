@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: wordpress-ingress
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/ferenc-hechler/vserver-k8s-setup.git
+    path: argocd/helm/wordpress-ingresss
+    targetRevision: vps-2
+    helm:
+      values: |
+        parentDomain: vps-2.calcbox.de
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: wordpress
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true  
