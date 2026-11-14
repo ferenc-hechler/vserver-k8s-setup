@@ -70,6 +70,16 @@ Warning: metadata.finalizers: "resources-finalizer.argocd.argoproj.io": prefer a
 application.argoproj.io/wordpress created
 ```
 
+```
+kubectl create secret generic wordpress-credentials ^
+     --namespace wordpress ^
+     --from-literal=wordpress-password="****" ^
+     --dry-run=client -o yaml | kubeseal ^
+         --controller-name sealed-secrets-controller ^
+         --controller-namespace kube-system ^
+         --format yaml > wordpress-sealedsecret.yaml
+```
+
 ## Uninstall ArgoCD
 
 ### Delete Applications deployed by ArgoCD
