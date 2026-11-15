@@ -24,15 +24,16 @@ spec:
           enabled: false
         livenessProbe:
           enabled: true
-        image:
-          repository: ocfork/wordpress-updraft
-          pullPolicy: Always
-        extraEnvVars:
-        - name: WORDPRESS_EXTRA_PLUGINS
-          value: "updraftplus"
-        global:
-          security:
-            allowInsecureImages: true
+        #image:
+        #  repository: ocfork/wordpress-updraft
+        #  pullPolicy: Always
+        #extraEnvVars:
+        #- name: WORDPRESS_EXTRA_PLUGINS
+        #  value: "updraftplus"
+        #global:
+        #  security:
+        #    allowInsecureImages: true
+        wordpressPlugins: "updraftplus"
   destination:
     server: https://kubernetes.default.svc
     namespace: wordpress

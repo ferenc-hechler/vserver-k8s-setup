@@ -16,12 +16,14 @@ RUN rm /tmp/updraftplus.zip
 RUN chown -R 1001:1001 /opt/bitnami/wordpress/wp-content/plugins/updraftplus
 
 # Das Init-Skript in den von Bitnami vorgesehenen Ordner kopieren
-COPY mkdir -p /docker-entrypoint-initd \
-    && activate-plugin.sh /docker-entrypoint-initd/activate-plugin.sh
+COPY activate-plugin.sh /docker-entrypoint-initd/activate-plugin.sh
+COPY activate-plugin.sh /docker-entrypoint-initdb.d/activate-plugin.sh
 
 # Sicherstellen, dass das Skript ausführbar ist und dem richtigen Benutzer gehört
 RUN chmod +x /docker-entrypoint-initd/activate-plugin.sh \
     && chown 1001:1001 /docker-entrypoint-initd/activate-plugin.sh
-
+	RUN chmod +x /docker-entrypoint-initdb.d/activate-plugin.sh \
+	    && chown 1001:1001 /docker-entrypoint-initdb.d/activate-plugin.sh
+	
 # Zurück zum Standard-Bitnami-Benutzer wechseln
 USER 1001
